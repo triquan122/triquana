@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TikTok – Học từ vựng</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f;--surface:#13131a;--accent:#e0ff4f;--accent2:#ff6b6b;--accent3:#4fc3f7;
+  --green:#4ade80;--red:#f87171;--text:#f0f0f0;--muted:#888;--radius:24px;
+  --auto-duration:20s;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;display:flex;flex-direction:column;max-width:480px;margin:0 auto;user-select:none;}
+
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 6px;flex-shrink:0;gap:8px;}
+.logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.logo span{color:var(--accent);}
+.header-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.streak-badge{display:flex;align-items:center;gap:5px;background:rgba(224,255,79,.1);border:1px solid rgba(224,255,79,.25);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--accent);}
+.mode-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;}
+.mode-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
+.list-btn{background:rgba(79,195,247,.1);border:1px solid rgba(79,195,247,.25);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--accent3);cursor:pointer;transition:all .2s;}
+.list-btn:hover{background:rgba(79,195,247,.2);}
+.autoplay-btn{display:flex;align-items:center;gap:5px;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;transition:all .25s;border:1px solid;}
+.autoplay-btn.off{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.45);}
+.autoplay-btn.on{background:rgba(224,255,79,.13);border-color:rgba(224,255,79,.4);color:var(--accent);}
+.autoplay-btn:active{transform:scale(.93);}
+.autoplay-icon{font-size:13px;line-height:1;}
+
+.stats-bar{display:flex;gap:6px;padding:4px 18px 8px;flex-shrink:0;}
+.stat-pill{flex:1;background:rgba(255,255,255,.05);border-radius:10px;padding:6px 4px;text-align:center;border:1px solid rgba(255,255,255,.06);}
+.stat-pill .val{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;}
+.stat-pill .lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:1px;}
+.val-new{color:var(--accent3);}.val-review{color:#fbbf24;}.val-known{color:var(--green);}.val-today{color:var(--accent);}
+
+.progress-wrap{position:relative;height:3px;margin:0 18px 6px;border-radius:4px;background:rgba(255,255,255,.07);overflow:visible;flex-shrink:0;}
+.progress-track{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent3),var(--accent));transform-origin:left;transform:scaleX(0);transition:none;}
+.progress-dot{position:absolute;top:50%;right:0;width:8px;height:8px;border-radius:50%;background:var(--accent);transform:translate(50%,-50%) scale(0);transition:transform .2s;box-shadow:0 0 6px var(--accent);}
+.progress-wrap.active .progress-dot{transform:translate(50%,-50%) scale(1);}
+.progress-label{position:absolute;right:0;top:-18px;font-size:10px;font-weight:700;color:rgba(224,255,79,.6);opacity:0;transition:opacity .3s;white-space:nowrap;}
+.progress-wrap.active .progress-label{opacity:1;}
+
+.card-area{flex:1;position:relative;overflow:hidden;padding:0 14px;}
+.vocab-card{position:absolute;inset:0;margin:0 0 8px;border-radius:var(--radius);padding:24px 20px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:grab;border:1px solid rgba(255,255,255,.06);will-change:transform;overflow:hidden;touch-action:none;}
+.vocab-card:active{cursor:grabbing;}
+.card-deco{position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;opacity:.06;background:var(--accent);pointer-events:none;}
+.card-deco2{position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;opacity:.04;background:var(--accent3);pointer-events:none;}
+.card-shine{position:absolute;inset:0;border-radius:var(--radius);background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 50%);pointer-events:none;}
+.autoplay-ring{position:absolute;inset:0;border-radius:var(--radius);pointer-events:none;opacity:0;border:2px solid rgba(224,255,79,.0);transition:opacity .4s;}
+.autoplay-ring.pulse{animation:ringPulse 2s ease-in-out infinite;opacity:1;}
+@keyframes ringPulse{0%,100%{border-color:rgba(224,255,79,.0);}50%{border-color:rgba(224,255,79,.18);}}
+
+.card-content{display:flex;flex-direction:column;align-items:center;width:100%;}
+.card-meta{display:flex;gap:8px;align-items:center;margin-bottom:14px;}
+.card-type-badge{font-size:40px;font-weight:800;padding:0;border-radius:0;background:none;border:none;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:-1px;line-height:1;font-family:'Syne',sans-serif;}
+.card-srs-badge{font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+.badge-new{background:rgba(79,195,247,.15);color:var(--accent3);}
+.badge-review{background:rgba(251,191,36,.15);color:#fbbf24;}
+.badge-known{background:rgba(74,222,128,.15);color:var(--green);}
+
+.card-word-wrap{width:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.card-word{
+  font-family:'Syne',sans-serif;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.6));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;display:block;font-size:72px;letter-spacing:-2px;
+}
+
+.card-ipa{font-size:clamp(16px,5vw,36px);font-weight:700;color:var(--accent3);font-style:italic;margin-bottom:16px;letter-spacing:.5px;text-shadow:0 0 24px rgba(79,195,247,.35);line-height:1.2;}
+.card-divider{height:1px;background:rgba(255,255,255,.07);margin-bottom:14px;width:56px;}
+.card-meaning-label{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.card-meaning{font-size:clamp(22px,7vw,44px);font-weight:700;color:var(--accent);line-height:1.2;margin-bottom:14px;width:100%;text-align:center;word-break:break-word;}
+.card-example{font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;border-left:2px solid rgba(255,255,255,.1);padding:0 12px;font-style:italic;text-align:left;max-width:300px;}
+.card-example em{color:rgba(255,255,255,.75);font-style:normal;font-weight:600;}
+
+/* voice indicator */
+.voice-indicator{display:flex;align-items:center;gap:6px;margin-top:12px;opacity:.5;font-size:11px;color:var(--accent3);}
+.voice-bars{display:flex;gap:2px;align-items:flex-end;height:14px;}
+.voice-bar{width:3px;background:var(--accent3);border-radius:2px;animation:none;}
+.voice-bars.speaking .voice-bar:nth-child(1){animation:vbar 0.6s ease-in-out infinite;}
+.voice-bars.speaking .voice-bar:nth-child(2){animation:vbar 0.6s ease-in-out 0.1s infinite;}
+.voice-bars.speaking .voice-bar:nth-child(3){animation:vbar 0.6s ease-in-out 0.2s infinite;}
+.voice-bars.speaking .voice-bar:nth-child(4){animation:vbar 0.6s ease-in-out 0.3s infinite;}
+.voice-bar{height:4px;}
+@keyframes vbar{0%,100%{height:4px;}50%{height:14px;}}
+
+.swipe-ind{position:absolute;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;transition:opacity .1s;pointer-events:none;z-index:5;}
+.swipe-ind.up{top:14px;}.swipe-ind.down{bottom:14px;}
+.swipe-ind .icon{font-size:22px;}.swipe-ind .lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.ind-up{color:#a78bfa;}.ind-down{color:var(--green);}
+
+.bottom-bar{padding:8px 14px 18px;display:flex;gap:10px;align-items:center;flex-shrink:0;}
+.btn-remember{flex:1;height:52px;border-radius:16px;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;}
+.btn-forgot{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.25);}
+.btn-forgot:hover{background:rgba(248,113,113,.22);}
+.btn-knew{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.25);}
+.btn-knew:hover{background:rgba(74,222,128,.22);}
+.btn-remember:active{transform:scale(.96);}
+.btn-fav{width:52px;height:52px;border-radius:14px;flex-shrink:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:20px;}
+.btn-fav:hover{background:rgba(255,200,0,.15);}
+.btn-fav.active{background:rgba(255,200,0,.2);border-color:rgba(255,200,0,.4);}
+.btn-fav:active{transform:scale(.93);}
+
+.swipe-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.18);padding-bottom:2px;flex-shrink:0;}
+
+/* ── MODE PANEL ── */
+.mode-panel{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:flex;flex-direction:column;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
+.mode-panel.open{opacity:1;pointer-events:all;}
+.mode-sheet{background:#13131a;border-radius:24px 24px 0 0;padding:20px 20px 36px;border-top:1px solid rgba(255,255,255,.08);transform:translateY(40px);transition:transform .3s cubic-bezier(.34,1.3,.64,1);max-height:90dvh;overflow-y:auto;}
+.mode-panel.open .mode-sheet{transform:translateY(0);}
+.mode-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:16px;}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mode-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;cursor:pointer;transition:all .2s;}
+.mode-card:hover,.mode-card.active{background:rgba(224,255,79,.1);border-color:rgba(224,255,79,.3);}
+.mode-card .mc-icon{font-size:24px;margin-bottom:6px;}
+.mode-card .mc-name{font-size:13px;font-weight:700;margin-bottom:2px;}
+.mode-card .mc-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.mode-close{width:100%;margin-top:14px;height:46px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
+.autoplay-setting{margin-top:18px;background:rgba(224,255,79,.05);border:1px solid rgba(224,255,79,.15);border-radius:16px;padding:14px;}
+.autoplay-setting .as-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.as-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.as-label{font-size:12px;color:rgba(255,255,255,.55);}
+.speed-pills{display:flex;gap:6px;}
+.speed-pill{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:4px 10px;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;font-family:inherit;}
+.speed-pill.active{background:rgba(224,255,79,.2);border-color:rgba(224,255,79,.5);color:var(--accent);}
+
+/* ── VOCAB LIST PANEL ── */
+.list-panel{position:fixed;inset:0;z-index:160;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .32s cubic-bezier(.34,1.2,.64,1);max-width:480px;margin:0 auto;}
+.list-panel.open{transform:translateX(0);}
+.list-header{display:flex;align-items:center;gap:12px;padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
+.list-back{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;}
+.list-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;flex:1;}
+.list-word-count{font-size:12px;color:var(--muted);}
+.list-toolbar{display:flex;gap:8px;padding:10px 18px;flex-shrink:0;flex-wrap:wrap;}
+.list-search{flex:1;min-width:140px;height:36px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);padding:0 14px;font-size:13px;font-family:inherit;outline:none;}
+.list-search:focus{border-color:rgba(79,195,247,.5);}
+.list-search::placeholder{color:rgba(255,255,255,.3);}
+.list-filter{height:34px;padding:0 12px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);font-size:12px;font-family:inherit;cursor:pointer;outline:none;}
+.list-filter:focus{border-color:rgba(79,195,247,.4);}
+.list-filter option{background:#1a1a2e;color:#fff;}
+.list-count-bar{padding:0 18px 6px;font-size:11px;color:var(--muted);flex-shrink:0;}
+.list-scroll{flex:1;overflow-y:auto;padding:0 14px 20px;}
+.list-scroll::-webkit-scrollbar{width:3px;}
+.list-scroll::-webkit-scrollbar-track{background:transparent;}
+.list-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px;}
+.vl-table{width:100%;border-collapse:collapse;}
+.vl-table thead th{position:sticky;top:0;background:var(--bg);z-index:2;font-size:10px;font-weight:700;color:var(--muted);padding:8px 8px 6px;text-align:left;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid rgba(255,255,255,.07);}
+.vl-table tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;cursor:pointer;}
+.vl-table tbody tr:hover{background:rgba(255,255,255,.04);}
+.vl-table tbody tr:last-child{border-bottom:none;}
+.vl-table td{padding:10px 8px;vertical-align:middle;}
+.td-num{font-size:11px;color:rgba(255,255,255,.2);width:28px;}
+.td-word{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;}
+.td-ipa{font-size:12px;color:var(--accent3);font-style:italic;}
+.td-vn{font-size:13px;color:rgba(255,255,255,.75);}
+.td-badge{display:inline-block;background:rgba(255,255,255,.08);border-radius:6px;padding:2px 7px;font-size:10px;color:rgba(255,255,255,.45);font-weight:600;}
+.td-topic{font-size:10px;color:rgba(255,255,255,.3);}
+.vl-empty{text-align:center;padding:48px 20px;color:var(--muted);font-size:14px;}
+
+/* ── DONE / START ── */
+.done-screen{display:none;position:absolute;inset:0;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:36px;z-index:100;}
+.done-screen.show{display:flex;}
+.done-emoji{font-size:64px;margin-bottom:20px;}
+.done-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;margin-bottom:10px;}
+.done-sub{color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:28px;}
+.done-stats{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;justify-content:center;}
+.dstat{background:var(--surface);border-radius:14px;padding:14px 18px;text-align:center;border:1px solid rgba(255,255,255,.06);}
+.dstat-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;}
+.dstat-lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+.restart-btn{background:var(--accent);color:#000;border:none;border-radius:14px;padding:14px 36px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
+.restart-btn:hover{transform:scale(1.04);}
+
+.start-overlay{position:fixed;inset:0;z-index:200;background:rgba(10,10,15,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;backdrop-filter:blur(4px);transition:opacity .3s;}
+.start-overlay .so-icon{font-size:56px;}
+.start-overlay .so-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;}
+.start-overlay .so-sub{font-size:14px;color:rgba(255,255,255,.45);text-align:center;line-height:1.6;padding:0 32px;}
+.start-overlay .so-btn{margin-top:8px;background:var(--accent);color:#000;border:none;border-radius:14px;padding:14px 36px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;}
+
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:rgba(30,30,40,.95);color:#fff;padding:9px 18px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999;border:1px solid rgba(255,255,255,.1);white-space:nowrap;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">/<span>/</span></div>
+  <div class="header-right">
+    <div class="streak-badge">🔥 <span id="streak-num">1</span> ngày</div>
+    <button class="list-btn" onclick="openListPanel()">📋 Từ vựng</button>
+    <button class="autoplay-btn off" id="autoplay-btn" onclick="toggleAutoplay()">
+      <span class="autoplay-icon">⏵</span><span id="autoplay-label">Tự động</span>
+    </button>
+    <button class="mode-btn" onclick="openModePanel()">⚡ Chế độ</button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-pill"><div class="val val-new" id="s-new">0</div><div class="lbl">Mới</div></div>
+  <div class="stat-pill"><div class="val val-review" id="s-review">0</div><div class="lbl">Ôn tập</div></div>
+  <div class="stat-pill"><div class="val val-known" id="s-known">0</div><div class="lbl">Đã nhớ</div></div>
+  <div class="stat-pill"><div class="val val-today" id="s-today">0</div><div class="lbl">Hôm nay</div></div>
+</div>
+
+<div class="progress-wrap" id="progress-wrap">
+  <div class="progress-track" id="progress-track"></div>
+  <div class="progress-dot"></div>
+  <div class="progress-label" id="progress-label">⏱ 20s</div>
+</div>
+
+<div class="card-area">
+  <div class="swipe-ind up ind-up" id="ind-up"><div class="icon">↑</div><div class="lbl">Quay lại</div></div>
+  <div class="swipe-ind down ind-down" id="ind-down"><div class="icon">↓</div><div class="lbl">Tiếp theo</div></div>
+  <div class="vocab-card" id="main-card">
+    <div class="autoplay-ring" id="autoplay-ring"></div>
+    <div class="card-shine"></div><div class="card-deco"></div><div class="card-deco2"></div>
+    <div class="card-content">
+      <div class="card-meta">
+        <div class="card-type-badge" id="c-type">n</div>
+        <div class="card-srs-badge badge-new" id="c-srs">Mới</div>
+      </div>
+      <div class="card-word-wrap">
+        <span class="card-word" id="c-word">daughter</span>
+      </div>
+      <div class="card-ipa" id="c-ipa">/ˈdɔːtər/</div>
+      <div class="card-divider"></div>
+      <div class="card-meaning-label">Nghĩa tiếng Việt</div>
+      <div class="card-meaning" id="c-meaning">con gái</div>
+      <div class="card-example" id="c-example">...</div>
+      <div class="voice-indicator" id="voice-indicator">
+        <div class="voice-bars" id="voice-bars">
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+          <div class="voice-bar"></div>
+        </div>
+        <span id="voice-name">🔊 Giọng nam</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="swipe-hint">Vuốt lên/xuống · ❌✅ để đánh giá · ⏵ tự động</div>
+
+<div class="bottom-bar">
+  <button class="btn-remember btn-forgot" onclick="rateCard(false)">❌ Chưa nhớ</button>
+  <button class="btn-fav" id="btn-fav" onclick="toggleFav()">♡</button>
+  <button class="btn-remember btn-knew" onclick="rateCard(true)">✅ Nhớ rồi</button>
+</div>
+
+<!-- ── VOCAB LIST PANEL ── -->
+<div class="list-panel" id="list-panel">
+  <div class="list-header">
+    <button class="list-back" onclick="closeListPanel()">←</button>
+    <div class="list-title">📋 Danh sách từ vựng</div>
+    <div class="list-word-count" id="list-total"></div>
+  </div>
+  <div class="list-toolbar">
+    <input class="list-search" id="list-search" type="text" placeholder="🔍 Tìm từ, nghĩa, IPA..." oninput="filterVocabList()">
+    <select class="list-filter" id="list-topic-filter" onchange="filterVocabList()">
+      <option value="">Tất cả chủ đề</option>
+    </select>
+    <select class="list-filter" id="list-type-filter" onchange="filterVocabList()">
+      <option value="">Tất cả loại từ</option>
+    </select>
+  </div>
+  <div class="list-count-bar" id="list-count-bar"></div>
+  <div class="list-scroll">
+    <table class="vl-table">
+      <thead>
+        <tr>
+          <th class="td-num">#</th>
+          <th>Từ vựng</th>
+          <th>IPA</th>
+          <th>Nghĩa tiếng Việt</th>
+          <th>Loại</th>
+          <th>Chủ đề</th>
+        </tr>
+      </thead>
+      <tbody id="list-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── MODE PANEL ── -->
+<div class="mode-panel" id="mode-panel" onclick="closeModeOnBg(event)">
+  <div class="mode-sheet">
+    <div class="mode-title">Chọn chế độ học</div>
+    <div class="mode-grid">
+      <div class="mode-card active" id="mode-smart" onclick="setMode('smart')">
+        <div class="mc-icon">🧠</div><div class="mc-name">Thông minh</div><div class="mc-desc">SRS + random có kiểm soát</div>
+      </div>
+      <div class="mode-card" id="mode-new" onclick="setMode('new')">
+        <div class="mc-icon">✨</div><div class="mc-name">Từ mới</div><div class="mc-desc">Chỉ học các từ chưa gặp</div>
+      </div>
+      <div class="mode-card" id="mode-review" onclick="setMode('review')">
+        <div class="mc-icon">🔄</div><div class="mc-name">Ôn tập</div><div class="mc-desc">Chỉ từ đã học chưa nhớ chắc</div>
+      </div>
+      <div class="mode-card" id="mode-explore" onclick="setMode('explore')">
+        <div class="mc-icon">🗺️</div><div class="mc-name">Khám phá</div><div class="mc-desc">Random tự do</div>
+      </div>
+    </div>
+    <div class="autoplay-setting">
+      <div class="as-title">⏱ Tự động chuyển từ</div>
+      <div class="as-row">
+        <span class="as-label">Tốc độ chuyển</span>
+        <div class="speed-pills">
+          <button class="speed-pill" data-sec="10" onclick="setAutoSpeed(10)">10s</button>
+          <button class="speed-pill active" data-sec="20" onclick="setAutoSpeed(20)">20s</button>
+          <button class="speed-pill" data-sec="30" onclick="setAutoSpeed(30)">30s</button>
+          <button class="speed-pill" data-sec="60" onclick="setAutoSpeed(60)">60s</button>
+        </div>
+      </div>
+      <div class="as-row" style="margin-bottom:0;">
+        <span class="as-label" style="font-size:11px;color:rgba(255,255,255,.3);">Bật/tắt tự động</span>
+        <button class="autoplay-btn off" id="autoplay-btn2" onclick="toggleAutoplay()" style="font-size:11px;padding:4px 10px;">
+          <span id="autoplay-label2">Đang tắt</span>
+        </button>
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Học theo chủ đề</div>
+      <div id="topic-grid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+    <button class="mode-close" onclick="closeModePanel()">Xong ✓</button>
+  </div>
+</div>
+
+<div class="done-screen" id="done-screen">
+  <div class="done-emoji">🎉</div>
+  <div class="done-title">Xuất sắc!</div>
+  <div class="done-sub" id="done-sub">Hoàn thành session hôm nay!</div>
+  <div class="done-stats">
+    <div class="dstat"><div class="dstat-num" id="d-knew" style="color:var(--green)">0</div><div class="dstat-lbl">Đã nhớ</div></div>
+    <div class="dstat"><div class="dstat-num" id="d-forgot" style="color:var(--red)">0</div><div class="dstat-lbl">Chưa nhớ</div></div>
+    <div class="dstat"><div class="dstat-num" id="d-fav" style="color:#fbbf24">0</div><div class="dstat-lbl">Yêu thích</div></div>
+  </div>
+  <button class="restart-btn" onclick="continueSession()">▶ Tiếp tục học</button>
+</div>
+
+<div class="start-overlay" id="start-overlay">
+  <div class="so-icon">📚</div>
+  <div class="so-title">TriQuan Vocab</div>
+  <div class="so-sub">450 từ vựng tiếng Anh cơ bản<br><span style="font-size:12px;color:rgba(255,255,255,.3)">Giọng đọc nam · SRS thông minh</span></div>
+  <button class="so-btn" id="start-btn">Bắt đầu ▶</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── FULL WORD LIST (450 từ) ──────────────────────────────────────────────────
+const WORDS = [
+  {id:0,w:"a few",ipa:"/ə fjuː/",vn:"một vài",ex:'I have <em>a few</em> questions.',t:"det",topic:"general"},
+  {id:1,w:"a little",ipa:"/ə ˈlɪtl/",vn:"một ít, một chút",ex:'Can I have <em>a little</em> sugar?',t:"det",topic:"general"},
+  {id:2,w:"a lot",ipa:"/ə lɒt/",vn:"rất nhiều",ex:'She reads <em>a lot</em> of books.',t:"adv",topic:"general"},
+  {id:3,w:"able",ipa:"/ˈeɪbl/",vn:"có khả năng, có thể",ex:'He is <em>able</em> to swim.',t:"adj",topic:"general"},
+  {id:4,w:"above",ipa:"/əˈbʌv/",vn:"ở trên, phía trên",ex:'The sky is <em>above</em> us.',t:"prep",topic:"general"},
+  {id:5,w:"afraid",ipa:"/əˈfreɪd/",vn:"sợ hãi",ex:'She is <em>afraid</em> of spiders.',t:"adj",topic:"feeling"},
+  {id:6,w:"after",ipa:"/ˈɑːftər/",vn:"sau khi, sau đó",ex:'We eat <em>after</em> school.',t:"prep",topic:"general"},
+  {id:7,w:"afternoon",ipa:"/ˌɑːftəˈnuːn/",vn:"buổi chiều",ex:'See you this <em>afternoon</em>.',t:"n",topic:"time"},
+  {id:8,w:"again",ipa:"/əˈɡen/",vn:"lại, một lần nữa",ex:'Please say that <em>again</em>.',t:"adv",topic:"general"},
+  {id:9,w:"age",ipa:"/eɪdʒ/",vn:"tuổi, độ tuổi",ex:'What is your <em>age</em>?',t:"n",topic:"general"},
+  {id:10,w:"ago",ipa:"/əˈɡəʊ/",vn:"trước đây, cách đây",ex:'I met him two years <em>ago</em>.',t:"adv",topic:"time"},
+  {id:11,w:"agree",ipa:"/əˈɡriː/",vn:"đồng ý",ex:'I <em>agree</em> with you.',t:"v",topic:"general"},
+  {id:12,w:"air",ipa:"/eər/",vn:"không khí",ex:'The <em>air</em> is fresh here.',t:"n",topic:"nature"},
+  {id:13,w:"airplane",ipa:"/ˈeərpleɪn/",vn:"máy bay",ex:'The <em>airplane</em> lands at noon.',t:"n",topic:"travel"},
+  {id:14,w:"airport",ipa:"/ˈeərpɔːrt/",vn:"sân bay",ex:'We drove to the <em>airport</em>.',t:"n",topic:"travel"},
+  {id:15,w:"almost",ipa:"/ˈɔːlməʊst/",vn:"gần như, hầu như",ex:'I am <em>almost</em> done.',t:"adv",topic:"general"},
+  {id:16,w:"along",ipa:"/əˈlɒŋ/",vn:"dọc theo, cùng với",ex:'Walk <em>along</em> the river.',t:"prep",topic:"general"},
+  {id:17,w:"already",ipa:"/ɔːlˈredi/",vn:"đã, rồi",ex:'She has <em>already</em> left.',t:"adv",topic:"general"},
+  {id:18,w:"also",ipa:"/ˈɔːlsəʊ/",vn:"cũng, ngoài ra",ex:'He can <em>also</em> speak French.',t:"adv",topic:"general"},
+  {id:19,w:"always",ipa:"/ˈɔːlweɪz/",vn:"luôn luôn",ex:'She <em>always</em> smiles.',t:"adv",topic:"general"},
+  {id:20,w:"a.m.",ipa:"/ˌeɪ ˈem/",vn:"buổi sáng (trước trưa)",ex:'Class starts at 8 <em>a.m.</em>',t:"n",topic:"time"},
+  {id:21,w:"America",ipa:"/əˈmerɪkə/",vn:"nước Mỹ",ex:'She lives in <em>America</em>.',t:"n",topic:"place"},
+  {id:22,w:"and",ipa:"/ænd/",vn:"và",ex:'Tom <em>and</em> Jerry are friends.',t:"conj",topic:"general"},
+  {id:23,w:"angry",ipa:"/ˈæŋɡri/",vn:"tức giận",ex:'He was <em>angry</em> at the news.',t:"adj",topic:"feeling"},
+  {id:24,w:"animal",ipa:"/ˈænɪml/",vn:"động vật",ex:'The zoo has many <em>animals</em>.',t:"n",topic:"nature"},
+  {id:25,w:"another",ipa:"/əˈnʌðər/",vn:"một cái khác, một người khác",ex:'Can I have <em>another</em> cookie?',t:"det",topic:"general"},
+  {id:26,w:"answer",ipa:"/ˈɑːnsər/",vn:"câu trả lời; trả lời",ex:'Please <em>answer</em> the question.',t:"n/v",topic:"education"},
+  {id:27,w:"any",ipa:"/ˈeni/",vn:"bất kỳ, một chút nào",ex:'Is there <em>any</em> milk left?',t:"det",topic:"general"},
+  {id:28,w:"anyone",ipa:"/ˈeniwʌn/",vn:"bất kỳ ai",ex:'Is <em>anyone</em> home?',t:"pron",topic:"general"},
+  {id:29,w:"anything",ipa:"/ˈeniθɪŋ/",vn:"bất cứ điều gì",ex:'I can do <em>anything</em>.',t:"pron",topic:"general"},
+  {id:30,w:"apartment",ipa:"/əˈpɑːrtmənt/",vn:"căn hộ",ex:'They live in an <em>apartment</em>.',t:"n",topic:"home"},
+  {id:31,w:"appear",ipa:"/əˈpɪər/",vn:"xuất hiện",ex:'A star will <em>appear</em> tonight.',t:"v",topic:"general"},
+  {id:32,w:"April",ipa:"/ˈeɪprəl/",vn:"tháng Tư",ex:'It rains a lot in <em>April</em>.',t:"n",topic:"time"},
+  {id:33,w:"arm",ipa:"/ɑːrm/",vn:"cánh tay",ex:'She broke her <em>arm</em>.',t:"n",topic:"body"},
+  {id:34,w:"around",ipa:"/əˈraʊnd/",vn:"xung quanh, khoảng",ex:'Walk <em>around</em> the park.',t:"prep",topic:"general"},
+  {id:35,w:"arrive",ipa:"/əˈraɪv/",vn:"đến nơi, tới nơi",ex:'We <em>arrive</em> at 9 o\'clock.',t:"v",topic:"travel"},
+  {id:36,w:"art",ipa:"/ɑːrt/",vn:"nghệ thuật",ex:'She loves <em>art</em> class.',t:"n",topic:"education"},
+  {id:37,w:"as",ipa:"/æz/",vn:"như là, khi",ex:'He works <em>as</em> a teacher.',t:"conj",topic:"general"},
+  {id:38,w:"ask",ipa:"/ɑːsk/",vn:"hỏi, yêu cầu",ex:'Please <em>ask</em> your teacher.',t:"v",topic:"general"},
+  {id:39,w:"at",ipa:"/æt/",vn:"ở, tại, vào lúc",ex:'Meet me <em>at</em> the park.',t:"prep",topic:"general"},
+  {id:40,w:"August",ipa:"/ˈɔːɡəst/",vn:"tháng Tám",ex:'Summer ends in <em>August</em>.',t:"n",topic:"time"},
+  {id:41,w:"aunt",ipa:"/ɑːnt/",vn:"cô, dì, bác gái",ex:'My <em>aunt</em> cooks very well.',t:"n",topic:"family"},
+  {id:42,w:"autumn",ipa:"/ˈɔːtəm/",vn:"mùa thu",ex:'Leaves fall in <em>autumn</em>.',t:"n",topic:"nature"},
+  {id:43,w:"away",ipa:"/əˈweɪ/",vn:"đi xa, đi vắng",ex:'She is <em>away</em> on vacation.',t:"adv",topic:"general"},
+  {id:44,w:"baby",ipa:"/ˈbeɪbi/",vn:"em bé, trẻ sơ sinh",ex:'The <em>baby</em> is sleeping.',t:"n",topic:"family"},
+  {id:45,w:"back",ipa:"/bæk/",vn:"lưng; phía sau; quay lại",ex:'She hurt her <em>back</em>.',t:"n/adv",topic:"body"},
+  {id:46,w:"bad",ipa:"/bæd/",vn:"xấu, tệ, tồi",ex:'This food tastes <em>bad</em>.',t:"adj",topic:"general"},
+  {id:47,w:"bag",ipa:"/bæɡ/",vn:"túi, cặp",ex:'She carries a big <em>bag</em>.',t:"n",topic:"general"},
+  {id:48,w:"bakery",ipa:"/ˈbeɪkəri/",vn:"tiệm bánh mì",ex:'The <em>bakery</em> opens early.',t:"n",topic:"food"},
+  {id:49,w:"band",ipa:"/bænd/",vn:"ban nhạc; dải, băng",ex:'The <em>band</em> played all night.',t:"n",topic:"general"},
+  {id:50,w:"bank",ipa:"/bæŋk/",vn:"ngân hàng; bờ sông",ex:'He went to the <em>bank</em>.',t:"n",topic:"business"},
+  {id:51,w:"baseball",ipa:"/ˈbeɪsbɔːl/",vn:"bóng chày",ex:'They played <em>baseball</em> after school.',t:"n",topic:"sports"},
+  {id:52,w:"basketball",ipa:"/ˈbɑːskɪtbɔːl/",vn:"bóng rổ",ex:'He loves playing <em>basketball</em>.',t:"n",topic:"sports"},
+  {id:53,w:"bath",ipa:"/bɑːθ/",vn:"tắm, bồn tắm",ex:'She takes a <em>bath</em> every night.',t:"n",topic:"home"},
+  {id:54,w:"bathroom",ipa:"/ˈbɑːθruːm/",vn:"phòng tắm",ex:'The <em>bathroom</em> is upstairs.',t:"n",topic:"home"},
+  {id:55,w:"beach",ipa:"/biːtʃ/",vn:"bãi biển",ex:'We played at the <em>beach</em>.',t:"n",topic:"nature"},
+  {id:56,w:"bear",ipa:"/beər/",vn:"con gấu",ex:'A <em>bear</em> lives in the forest.',t:"n",topic:"nature"},
+  {id:57,w:"beautiful",ipa:"/ˈbjuːtɪfl/",vn:"xinh đẹp, tuyệt vời",ex:'What a <em>beautiful</em> sunset!',t:"adj",topic:"general"},
+  {id:58,w:"because",ipa:"/bɪˈkɒz/",vn:"vì, bởi vì",ex:'I stayed home <em>because</em> it rained.',t:"conj",topic:"general"},
+  {id:59,w:"become",ipa:"/bɪˈkʌm/",vn:"trở thành",ex:'She wants to <em>become</em> a doctor.',t:"v",topic:"general"},
+  {id:60,w:"bed",ipa:"/bed/",vn:"cái giường",ex:'He went to <em>bed</em> early.',t:"n",topic:"home"},
+  {id:61,w:"bedroom",ipa:"/ˈbedruːm/",vn:"phòng ngủ",ex:'The <em>bedroom</em> has two windows.',t:"n",topic:"home"},
+  {id:62,w:"bee",ipa:"/biː/",vn:"con ong",ex:'A <em>bee</em> stung his hand.',t:"n",topic:"nature"},
+  {id:63,w:"beef",ipa:"/biːf/",vn:"thịt bò",ex:'I like <em>beef</em> noodle soup.',t:"n",topic:"food"},
+  {id:64,w:"before",ipa:"/bɪˈfɔːr/",vn:"trước khi, trước đó",ex:'Wash your hands <em>before</em> eating.',t:"prep",topic:"general"},
+  {id:65,w:"begin",ipa:"/bɪˈɡɪn/",vn:"bắt đầu",ex:'The class will <em>begin</em> soon.',t:"v",topic:"general"},
+  {id:66,w:"behind",ipa:"/bɪˈhaɪnd/",vn:"phía sau, đằng sau",ex:'The park is <em>behind</em> the school.',t:"prep",topic:"general"},
+  {id:67,w:"believe",ipa:"/bɪˈliːv/",vn:"tin tưởng, tin vào",ex:'I <em>believe</em> you.',t:"v",topic:"general"},
+  {id:68,w:"bell",ipa:"/bel/",vn:"cái chuông",ex:'The <em>bell</em> rings at three.',t:"n",topic:"school"},
+  {id:69,w:"belong",ipa:"/bɪˈlɒŋ/",vn:"thuộc về",ex:'This bag <em>belongs</em> to me.',t:"v",topic:"general"},
+  {id:70,w:"below",ipa:"/bɪˈləʊ/",vn:"dưới, bên dưới",ex:'The temperature is <em>below</em> zero.',t:"prep",topic:"general"},
+  {id:71,w:"belt",ipa:"/belt/",vn:"dây lưng, thắt lưng",ex:'He wears a leather <em>belt</em>.',t:"n",topic:"general"},
+  {id:72,w:"beside",ipa:"/bɪˈsaɪd/",vn:"bên cạnh",ex:'Sit <em>beside</em> me.',t:"prep",topic:"general"},
+  {id:73,w:"between",ipa:"/bɪˈtwiːn/",vn:"giữa (hai vật)",ex:'The shop is <em>between</em> the bank and the park.',t:"prep",topic:"general"},
+  {id:74,w:"bicycle",ipa:"/ˈbaɪsɪkl/",vn:"xe đạp",ex:'She rides her <em>bicycle</em> to school.',t:"n",topic:"travel"},
+  {id:75,w:"big",ipa:"/bɪɡ/",vn:"to, lớn",ex:'That is a <em>big</em> dog.',t:"adj",topic:"general"},
+  {id:76,w:"bird",ipa:"/bɜːrd/",vn:"con chim",ex:'A <em>bird</em> is singing in the tree.',t:"n",topic:"nature"},
+  {id:77,w:"bite",ipa:"/baɪt/",vn:"cắn",ex:'The dog might <em>bite</em> you.',t:"v",topic:"general"},
+  {id:78,w:"black",ipa:"/blæk/",vn:"màu đen",ex:'She wears a <em>black</em> dress.',t:"adj",topic:"general"},
+  {id:79,w:"blackboard",ipa:"/ˈblækbɔːrd/",vn:"bảng đen",ex:'Write it on the <em>blackboard</em>.',t:"n",topic:"school"},
+  {id:80,w:"blind",ipa:"/blaɪnd/",vn:"mù, khiếm thị",ex:'He has been <em>blind</em> since birth.',t:"adj",topic:"health"},
+  {id:81,w:"block",ipa:"/blɒk/",vn:"dãy nhà; khối; chặn",ex:'He lives one <em>block</em> away.',t:"n",topic:"place"},
+  {id:82,w:"blow",ipa:"/bləʊ/",vn:"thổi, gió thổi",ex:'The wind <em>blows</em> strongly.',t:"v",topic:"nature"},
+  {id:83,w:"boat",ipa:"/bəʊt/",vn:"thuyền, tàu nhỏ",ex:'We rowed the <em>boat</em> across the lake.',t:"n",topic:"travel"},
+  {id:84,w:"bored",ipa:"/bɔːrd/",vn:"buồn chán",ex:'I am <em>bored</em> at home.',t:"adj",topic:"feeling"},
+  {id:85,w:"boring",ipa:"/ˈbɔːrɪŋ/",vn:"nhàm chán, tẻ nhạt",ex:'This movie is so <em>boring</em>.',t:"adj",topic:"feeling"},
+  {id:86,w:"born",ipa:"/bɔːrn/",vn:"được sinh ra",ex:'She was <em>born</em> in July.',t:"v",topic:"general"},
+  {id:87,w:"borrow",ipa:"/ˈbɒrəʊ/",vn:"mượn",ex:'Can I <em>borrow</em> your pen?',t:"v",topic:"general"},
+  {id:88,w:"both",ipa:"/bəʊθ/",vn:"cả hai",ex:'<em>Both</em> of them passed the test.',t:"det",topic:"general"},
+  {id:89,w:"bottle",ipa:"/ˈbɒtl/",vn:"cái chai",ex:'She drinks a <em>bottle</em> of water.',t:"n",topic:"general"},
+  {id:90,w:"bottom",ipa:"/ˈbɒtəm/",vn:"đáy, phía dưới",ex:'The key is at the <em>bottom</em> of the bag.',t:"n",topic:"general"},
+  {id:91,w:"bowl",ipa:"/bəʊl/",vn:"cái bát, tô",ex:'She ate a <em>bowl</em> of rice.',t:"n",topic:"food"},
+  {id:92,w:"box",ipa:"/bɒks/",vn:"cái hộp",ex:'Put it in the <em>box</em>.',t:"n",topic:"general"},
+  {id:93,w:"bread",ipa:"/bred/",vn:"bánh mì",ex:'I eat <em>bread</em> for breakfast.',t:"n",topic:"food"},
+  {id:94,w:"break",ipa:"/breɪk/",vn:"vỡ, gãy; giải lao",ex:'Don\'t <em>break</em> the glass.',t:"v",topic:"general"},
+  {id:95,w:"breakfast",ipa:"/ˈbrekfəst/",vn:"bữa sáng",ex:'We have <em>breakfast</em> at 7 a.m.',t:"n",topic:"food"},
+  {id:96,w:"bridge",ipa:"/brɪdʒ/",vn:"cây cầu",ex:'Cross the <em>bridge</em> carefully.',t:"n",topic:"place"},
+  {id:97,w:"bright",ipa:"/braɪt/",vn:"sáng, rực rỡ",ex:'The sun is very <em>bright</em> today.',t:"adj",topic:"general"},
+  {id:98,w:"bring",ipa:"/brɪŋ/",vn:"mang, đem đến",ex:'<em>Bring</em> your book tomorrow.',t:"v",topic:"general"},
+  {id:99,w:"brother",ipa:"/ˈbrʌðər/",vn:"anh trai, em trai",ex:'My <em>brother</em> is tall.',t:"n",topic:"family"},
+  {id:100,w:"brown",ipa:"/braʊn/",vn:"màu nâu",ex:'The dog has <em>brown</em> fur.',t:"adj",topic:"general"},
+  {id:101,w:"brush",ipa:"/brʌʃ/",vn:"bàn chải; chải",ex:'<em>Brush</em> your teeth twice a day.',t:"n/v",topic:"home"},
+  {id:102,w:"build",ipa:"/bɪld/",vn:"xây dựng",ex:'They will <em>build</em> a new school.',t:"v",topic:"general"},
+  {id:103,w:"burn",ipa:"/bɜːrn/",vn:"đốt, cháy",ex:'Don\'t <em>burn</em> the paper.',t:"v",topic:"general"},
+  {id:104,w:"business",ipa:"/ˈbɪznəs/",vn:"kinh doanh, công việc",ex:'He runs a small <em>business</em>.',t:"n",topic:"business"},
+  {id:105,w:"busy",ipa:"/ˈbɪzi/",vn:"bận rộn",ex:'She is always very <em>busy</em>.',t:"adj",topic:"general"},
+  {id:106,w:"but",ipa:"/bʌt/",vn:"nhưng, nhưng mà",ex:'I like coffee <em>but</em> not tea.',t:"conj",topic:"general"},
+  {id:107,w:"butter",ipa:"/ˈbʌtər/",vn:"bơ",ex:'Spread <em>butter</em> on the toast.',t:"n",topic:"food"},
+  {id:108,w:"buy",ipa:"/baɪ/",vn:"mua",ex:'I want to <em>buy</em> a new phone.',t:"v",topic:"general"},
+  {id:109,w:"cake",ipa:"/keɪk/",vn:"bánh ngọt",ex:'She baked a birthday <em>cake</em>.',t:"n",topic:"food"},
+  {id:110,w:"camera",ipa:"/ˈkæmərə/",vn:"máy ảnh",ex:'I forgot my <em>camera</em> at home.',t:"n",topic:"general"},
+  {id:111,w:"camp",ipa:"/kæmp/",vn:"cắm trại; trại",ex:'We <em>camp</em> near the river.',t:"v/n",topic:"travel"},
+  {id:112,w:"can",ipa:"/kæn/",vn:"có thể; lon, hộp",ex:'She <em>can</em> speak three languages.',t:"v/n",topic:"general"},
+  {id:113,w:"candy",ipa:"/ˈkændi/",vn:"kẹo",ex:'Children love <em>candy</em>.',t:"n",topic:"food"},
+  {id:114,w:"cap",ipa:"/kæp/",vn:"mũ lưỡi trai",ex:'He wears a red <em>cap</em>.',t:"n",topic:"general"},
+  {id:115,w:"car",ipa:"/kɑːr/",vn:"xe ô tô",ex:'He drives a blue <em>car</em>.',t:"n",topic:"travel"},
+  {id:116,w:"card",ipa:"/kɑːrd/",vn:"thẻ, bưu thiếp",ex:'Send her a birthday <em>card</em>.',t:"n",topic:"general"},
+  {id:117,w:"care",ipa:"/keər/",vn:"quan tâm, chăm sóc",ex:'She <em>cares</em> about her family.',t:"v/n",topic:"general"},
+  {id:118,w:"careful",ipa:"/ˈkeərfl/",vn:"cẩn thận",ex:'Be <em>careful</em> on the stairs.',t:"adj",topic:"general"},
+  {id:119,w:"carry",ipa:"/ˈkæri/",vn:"mang, vác, cầm",ex:'Can you <em>carry</em> this bag?',t:"v",topic:"general"},
+  {id:120,w:"case",ipa:"/keɪs/",vn:"trường hợp; hộp đựng",ex:'In that <em>case</em>, let\'s go.',t:"n",topic:"general"},
+  {id:121,w:"cat",ipa:"/kæt/",vn:"con mèo",ex:'The <em>cat</em> sits on the chair.',t:"n",topic:"nature"},
+  {id:122,w:"catch",ipa:"/kætʃ/",vn:"bắt, chụp lấy",ex:'<em>Catch</em> the ball!',t:"v",topic:"sports"},
+  {id:123,w:"celebrate",ipa:"/ˈselɪbreɪt/",vn:"kỷ niệm, ăn mừng",ex:'We <em>celebrate</em> her birthday.',t:"v",topic:"general"},
+  {id:124,w:"cent",ipa:"/sent/",vn:"xu (tiền)",ex:'It costs fifty <em>cents</em>.',t:"n",topic:"business"},
+  {id:125,w:"center",ipa:"/ˈsentər/",vn:"trung tâm",ex:'The park is in the <em>center</em> of town.',t:"n",topic:"place"},
+  {id:126,w:"chair",ipa:"/tʃeər/",vn:"ghế",ex:'Sit on the <em>chair</em>.',t:"n",topic:"home"},
+  {id:127,w:"chalk",ipa:"/tʃɔːk/",vn:"phấn viết",ex:'Write with <em>chalk</em> on the board.',t:"n",topic:"school"},
+  {id:128,w:"chance",ipa:"/tʃɑːns/",vn:"cơ hội, khả năng",ex:'Give me a <em>chance</em> to try.',t:"n",topic:"general"},
+  {id:129,w:"change",ipa:"/tʃeɪndʒ/",vn:"thay đổi; tiền thối",ex:'The weather will <em>change</em> tomorrow.',t:"v/n",topic:"general"},
+  {id:130,w:"cheap",ipa:"/tʃiːp/",vn:"rẻ, giá thấp",ex:'This shirt is very <em>cheap</em>.',t:"adj",topic:"business"},
+  {id:131,w:"cheat",ipa:"/tʃiːt/",vn:"gian lận, lừa dối",ex:'Don\'t <em>cheat</em> on the test.',t:"v",topic:"school"},
+  {id:132,w:"check",ipa:"/tʃek/",vn:"kiểm tra; séc",ex:'<em>Check</em> your answers before handing in.',t:"v",topic:"general"},
+  {id:133,w:"cheer",ipa:"/tʃɪər/",vn:"cổ vũ; hoan hô",ex:'The crowd will <em>cheer</em> for the team.',t:"v",topic:"sports"},
+  {id:134,w:"cheese",ipa:"/tʃiːz/",vn:"pho mát",ex:'I want some <em>cheese</em> on my pizza.',t:"n",topic:"food"},
+  {id:135,w:"chicken",ipa:"/ˈtʃɪkɪn/",vn:"gà; thịt gà",ex:'We had <em>chicken</em> for dinner.',t:"n",topic:"food"},
+  {id:136,w:"child",ipa:"/tʃaɪld/",vn:"đứa trẻ",ex:'Every <em>child</em> needs love.',t:"n",topic:"family"},
+  {id:137,w:"China",ipa:"/ˈtʃaɪnə/",vn:"Trung Quốc",ex:'<em>China</em> is a large country.',t:"n",topic:"place"},
+  {id:138,w:"Chinese",ipa:"/ˌtʃaɪˈniːz/",vn:"người Trung Quốc; tiếng Trung",ex:'She speaks <em>Chinese</em> fluently.',t:"n/adj",topic:"general"},
+  {id:139,w:"chopsticks",ipa:"/ˈtʃɒpstɪks/",vn:"đũa",ex:'Use <em>chopsticks</em> to eat noodles.',t:"n",topic:"food"},
+  {id:140,w:"Christmas",ipa:"/ˈkrɪsməs/",vn:"Giáng sinh",ex:'We exchange gifts on <em>Christmas</em>.',t:"n",topic:"general"},
+  {id:141,w:"church",ipa:"/tʃɜːrtʃ/",vn:"nhà thờ",ex:'They go to <em>church</em> every Sunday.',t:"n",topic:"place"},
+  {id:142,w:"circle",ipa:"/ˈsɜːrkl/",vn:"vòng tròn",ex:'Draw a <em>circle</em> on the paper.',t:"n",topic:"school"},
+  {id:143,w:"city",ipa:"/ˈsɪti/",vn:"thành phố",ex:'She lives in a big <em>city</em>.',t:"n",topic:"place"},
+  {id:144,w:"class",ipa:"/klɑːs/",vn:"lớp học; buổi học",ex:'Math <em>class</em> starts at 8.',t:"n",topic:"school"},
+  {id:145,w:"classmate",ipa:"/ˈklɑːsmeɪt/",vn:"bạn cùng lớp",ex:'My <em>classmates</em> are very friendly.',t:"n",topic:"school"},
+  {id:146,w:"classroom",ipa:"/ˈklɑːsruːm/",vn:"phòng học",ex:'The <em>classroom</em> has 30 desks.',t:"n",topic:"school"},
+  {id:147,w:"clean",ipa:"/kliːn/",vn:"sạch sẽ; dọn dẹp",ex:'Keep your room <em>clean</em>.',t:"adj/v",topic:"home"},
+  {id:148,w:"clear",ipa:"/klɪər/",vn:"rõ ràng; trong xanh",ex:'The sky is <em>clear</em> today.',t:"adj",topic:"general"},
+  {id:149,w:"climb",ipa:"/klaɪm/",vn:"leo, trèo",ex:'Let\'s <em>climb</em> the mountain.',t:"v",topic:"sports"},
+  {id:150,w:"clock",ipa:"/klɒk/",vn:"đồng hồ treo tường",ex:'The <em>clock</em> says nine o\'clock.',t:"n",topic:"home"},
+  {id:151,w:"close",ipa:"/kləʊz/",vn:"đóng lại; gần",ex:'Please <em>close</em> the door.',t:"v/adj",topic:"general"},
+  {id:152,w:"clothes",ipa:"/kləʊðz/",vn:"quần áo",ex:'She bought new <em>clothes</em> for school.',t:"n",topic:"general"},
+  {id:153,w:"cloudy",ipa:"/ˈklaʊdi/",vn:"có mây, âm u",ex:'It looks <em>cloudy</em> outside.',t:"adj",topic:"nature"},
+  {id:154,w:"club",ipa:"/klʌb/",vn:"câu lạc bộ",ex:'She joined the chess <em>club</em>.',t:"n",topic:"school"},
+  {id:155,w:"coat",ipa:"/kəʊt/",vn:"áo khoác",ex:'Wear your <em>coat</em>, it\'s cold.',t:"n",topic:"general"},
+  {id:156,w:"coffee",ipa:"/ˈkɒfi/",vn:"cà phê",ex:'He drinks <em>coffee</em> every morning.',t:"n",topic:"food"},
+  {id:157,w:"coke",ipa:"/kəʊk/",vn:"nước ngọt Coca",ex:'I\'d like a <em>coke</em>, please.',t:"n",topic:"food"},
+  {id:158,w:"cold",ipa:"/kəʊld/",vn:"lạnh; cảm lạnh",ex:'It is very <em>cold</em> in winter.',t:"adj/n",topic:"nature"},
+  {id:159,w:"collect",ipa:"/kəˈlekt/",vn:"sưu tầm, thu thập",ex:'He likes to <em>collect</em> stamps.',t:"v",topic:"hobby"},
+  {id:160,w:"color",ipa:"/ˈkʌlər/",vn:"màu sắc",ex:'What is your favorite <em>color</em>?',t:"n",topic:"general"},
+  {id:161,w:"come",ipa:"/kʌm/",vn:"đến, tới",ex:'Please <em>come</em> to my party.',t:"v",topic:"general"},
+  {id:162,w:"comfortable",ipa:"/ˈkʌmftəbl/",vn:"thoải mái, tiện nghi",ex:'This sofa is very <em>comfortable</em>.',t:"adj",topic:"home"},
+  {id:163,w:"comic",ipa:"/ˈkɒmɪk/",vn:"truyện tranh; hài hước",ex:'He reads a <em>comic</em> book.',t:"n/adj",topic:"general"},
+  {id:164,w:"common",ipa:"/ˈkɒmən/",vn:"phổ biến, thường gặp",ex:'Colds are <em>common</em> in winter.',t:"adj",topic:"general"},
+  {id:165,w:"convenient",ipa:"/kənˈviːniənt/",vn:"tiện lợi, thuận tiện",ex:'The supermarket is very <em>convenient</em>.',t:"adj",topic:"general"},
+  {id:166,w:"cook",ipa:"/kʊk/",vn:"nấu ăn; đầu bếp",ex:'She loves to <em>cook</em>.',t:"v/n",topic:"food"},
+  {id:167,w:"cookie",ipa:"/ˈkʊki/",vn:"bánh quy",ex:'He ate three <em>cookies</em>.',t:"n",topic:"food"},
+  {id:168,w:"cool",ipa:"/kuːl/",vn:"mát mẻ; tuyệt, ngầu",ex:'The weather is <em>cool</em> today.',t:"adj",topic:"general"},
+  {id:169,w:"copy",ipa:"/ˈkɒpi/",vn:"sao chép; bản sao",ex:'Please <em>copy</em> this sentence.',t:"v/n",topic:"school"},
+  {id:170,w:"correct",ipa:"/kəˈrekt/",vn:"đúng, chính xác",ex:'Your answer is <em>correct</em>.',t:"adj",topic:"school"},
+  {id:171,w:"cost",ipa:"/kɒst/",vn:"giá; tốn bao nhiêu",ex:'How much does it <em>cost</em>?',t:"v/n",topic:"business"},
+  {id:172,w:"cough",ipa:"/kɒf/",vn:"ho",ex:'He has a bad <em>cough</em>.',t:"v/n",topic:"health"},
+  {id:173,w:"count",ipa:"/kaʊnt/",vn:"đếm",ex:'<em>Count</em> from one to ten.',t:"v",topic:"school"},
+  {id:174,w:"country",ipa:"/ˈkʌntri/",vn:"đất nước; nông thôn",ex:'Which <em>country</em> are you from?',t:"n",topic:"place"},
+  {id:175,w:"cousin",ipa:"/ˈkʌzn/",vn:"anh/chị/em họ",ex:'My <em>cousin</em> is visiting us.',t:"n",topic:"family"},
+  {id:176,w:"cover",ipa:"/ˈkʌvər/",vn:"bao phủ; bìa sách",ex:'<em>Cover</em> the pot with a lid.',t:"v/n",topic:"general"},
+  {id:177,w:"cow",ipa:"/kaʊ/",vn:"con bò cái",ex:'The <em>cow</em> gives us milk.',t:"n",topic:"nature"},
+  {id:178,w:"crazy",ipa:"/ˈkreɪzi/",vn:"điên, điên rồ",ex:'That idea sounds <em>crazy</em>.',t:"adj",topic:"general"},
+  {id:179,w:"cross",ipa:"/krɒs/",vn:"qua; cây thánh giá; tức giận",ex:'<em>Cross</em> the road carefully.',t:"v/n/adj",topic:"general"},
+  {id:180,w:"cry",ipa:"/kraɪ/",vn:"khóc",ex:'The baby begins to <em>cry</em>.',t:"v",topic:"feeling"},
+  {id:181,w:"cup",ipa:"/kʌp/",vn:"cái cốc, chén",ex:'She drinks tea from a <em>cup</em>.',t:"n",topic:"home"},
+  {id:182,w:"cut",ipa:"/kʌt/",vn:"cắt",ex:'<em>Cut</em> the paper in half.',t:"v",topic:"general"},
+  {id:183,w:"cute",ipa:"/kjuːt/",vn:"dễ thương, xinh xắn",ex:'What a <em>cute</em> puppy!',t:"adj",topic:"general"},
+  {id:184,w:"dance",ipa:"/dɑːns/",vn:"nhảy múa; điệu nhảy",ex:'She loves to <em>dance</em>.',t:"v/n",topic:"hobby"},
+  {id:185,w:"dangerous",ipa:"/ˈdeɪndʒərəs/",vn:"nguy hiểm",ex:'That road is very <em>dangerous</em>.',t:"adj",topic:"general"},
+  {id:186,w:"dark",ipa:"/dɑːrk/",vn:"tối, tối tăm",ex:'It gets <em>dark</em> early in winter.',t:"adj",topic:"general"},
+  {id:187,w:"date",ipa:"/deɪt/",vn:"ngày tháng; cuộc hẹn hò",ex:'What is today\'s <em>date</em>?',t:"n",topic:"time"},
+  {id:188,w:"daughter",ipa:"/ˈdɔːtər/",vn:"con gái",ex:'She loves her <em>daughter</em> very much.',t:"n",topic:"family"},
+  {id:189,w:"day",ipa:"/deɪ/",vn:"ngày",ex:'Today is a beautiful <em>day</em>.',t:"n",topic:"time"},
+  {id:190,w:"dead",ipa:"/ded/",vn:"chết, đã mất",ex:'The plant is <em>dead</em>.',t:"adj",topic:"general"},
+  {id:191,w:"dear",ipa:"/dɪər/",vn:"thân yêu; đắt tiền",ex:'<em>Dear</em> friends, welcome!',t:"adj",topic:"general"},
+  {id:192,w:"December",ipa:"/dɪˈsembər/",vn:"tháng Mười hai",ex:'Christmas is in <em>December</em>.',t:"n",topic:"time"},
+  {id:193,w:"decide",ipa:"/dɪˈsaɪd/",vn:"quyết định",ex:'I can\'t <em>decide</em> what to eat.',t:"v",topic:"general"},
+  {id:194,w:"delicious",ipa:"/dɪˈlɪʃəs/",vn:"ngon, tuyệt vời",ex:'This cake is very <em>delicious</em>.',t:"adj",topic:"food"},
+  {id:195,w:"department store",ipa:"/dɪˈpɑːrtmənt stɔːr/",vn:"trung tâm thương mại",ex:'She shops at the <em>department store</em>.',t:"n",topic:"place"},
+  {id:196,w:"desk",ipa:"/desk/",vn:"bàn học, bàn làm việc",ex:'Put your book on the <em>desk</em>.',t:"n",topic:"school"},
+  {id:197,w:"dictionary",ipa:"/ˈdɪkʃəneri/",vn:"từ điển",ex:'Look up the word in a <em>dictionary</em>.',t:"n",topic:"school"},
+  {id:198,w:"die",ipa:"/daɪ/",vn:"chết",ex:'Plants <em>die</em> without water.',t:"v",topic:"general"},
+  {id:199,w:"different",ipa:"/ˈdɪfrənt/",vn:"khác nhau, khác biệt",ex:'We have <em>different</em> opinions.',t:"adj",topic:"general"},
+  {id:200,w:"difficult",ipa:"/ˈdɪfɪkəlt/",vn:"khó, khó khăn",ex:'This test is very <em>difficult</em>.',t:"adj",topic:"school"},
+  {id:201,w:"dig",ipa:"/dɪɡ/",vn:"đào",ex:'The dog likes to <em>dig</em> holes.',t:"v",topic:"general"},
+  {id:202,w:"dining room",ipa:"/ˈdaɪnɪŋ ruːm/",vn:"phòng ăn",ex:'We eat in the <em>dining room</em>.',t:"n",topic:"home"},
+  {id:203,w:"dinner",ipa:"/ˈdɪnər/",vn:"bữa tối",ex:'What did you have for <em>dinner</em>?',t:"n",topic:"food"},
+  {id:204,w:"dirty",ipa:"/ˈdɜːrti/",vn:"bẩn, dơ",ex:'Wash your <em>dirty</em> clothes.',t:"adj",topic:"home"},
+  {id:205,w:"dish",ipa:"/dɪʃ/",vn:"đĩa; món ăn",ex:'This is my favorite <em>dish</em>.',t:"n",topic:"food"},
+  {id:206,w:"do",ipa:"/duː/",vn:"làm",ex:'What do you <em>do</em> every day?',t:"v",topic:"general"},
+  {id:207,w:"doctor",ipa:"/ˈdɒktər/",vn:"bác sĩ",ex:'The <em>doctor</em> checks my health.',t:"n",topic:"health"},
+  {id:208,w:"dog",ipa:"/dɒɡ/",vn:"con chó",ex:'My <em>dog</em> is very friendly.',t:"n",topic:"nature"},
+  {id:209,w:"doll",ipa:"/dɒl/",vn:"búp bê",ex:'She plays with her <em>doll</em>.',t:"n",topic:"general"},
+  {id:210,w:"dollar",ipa:"/ˈdɒlər/",vn:"đô la",ex:'This costs ten <em>dollars</em>.',t:"n",topic:"business"},
+  {id:211,w:"door",ipa:"/dɔːr/",vn:"cánh cửa",ex:'Close the <em>door</em> please.',t:"n",topic:"home"},
+  {id:212,w:"down",ipa:"/daʊn/",vn:"xuống, phía dưới",ex:'Walk <em>down</em> the stairs.',t:"adv",topic:"general"},
+  {id:213,w:"dozen",ipa:"/ˈdʌzn/",vn:"một tá (mười hai cái)",ex:'She bought a <em>dozen</em> eggs.',t:"n",topic:"general"},
+  {id:214,w:"draw",ipa:"/drɔː/",vn:"vẽ",ex:'She can <em>draw</em> very well.',t:"v",topic:"hobby"},
+  {id:215,w:"dream",ipa:"/driːm/",vn:"giấc mơ; mơ",ex:'I had a strange <em>dream</em> last night.',t:"n/v",topic:"general"},
+  {id:216,w:"dress",ipa:"/dres/",vn:"váy; ăn mặc",ex:'She wears a red <em>dress</em>.',t:"n/v",topic:"general"},
+  {id:217,w:"drink",ipa:"/drɪŋk/",vn:"uống; đồ uống",ex:'<em>Drink</em> plenty of water.',t:"v/n",topic:"food"},
+  {id:218,w:"drive",ipa:"/draɪv/",vn:"lái xe",ex:'Can you <em>drive</em> a car?',t:"v",topic:"travel"},
+  {id:219,w:"driver",ipa:"/ˈdraɪvər/",vn:"tài xế",ex:'The <em>driver</em> is very careful.',t:"n",topic:"travel"},
+  {id:220,w:"drop",ipa:"/drɒp/",vn:"rơi, thả xuống; giọt",ex:'Don\'t <em>drop</em> the glass.',t:"v/n",topic:"general"},
+  {id:221,w:"dry",ipa:"/draɪ/",vn:"khô; làm khô",ex:'The clothes are <em>dry</em> now.',t:"adj/v",topic:"general"},
+  {id:222,w:"during",ipa:"/ˈdjʊərɪŋ/",vn:"trong suốt, trong khi",ex:'Don\'t talk <em>during</em> the movie.',t:"prep",topic:"general"},
+  {id:223,w:"each",ipa:"/iːtʃ/",vn:"mỗi",ex:'<em>Each</em> student has a book.',t:"det",topic:"general"},
+  {id:224,w:"ear",ipa:"/ɪər/",vn:"tai",ex:'She has a pain in her <em>ear</em>.',t:"n",topic:"body"},
+  {id:225,w:"early",ipa:"/ˈɜːrli/",vn:"sớm",ex:'She wakes up <em>early</em> every day.',t:"adv/adj",topic:"time"},
+  {id:226,w:"earth",ipa:"/ɜːrθ/",vn:"trái đất; đất",ex:'The <em>Earth</em> goes around the Sun.',t:"n",topic:"nature"},
+  {id:227,w:"east",ipa:"/iːst/",vn:"phía đông",ex:'The sun rises in the <em>east</em>.',t:"n/adj",topic:"general"},
+  {id:228,w:"easy",ipa:"/ˈiːzi/",vn:"dễ, đơn giản",ex:'This problem is <em>easy</em>.',t:"adj",topic:"general"},
+  {id:229,w:"eat",ipa:"/iːt/",vn:"ăn",ex:'We <em>eat</em> three meals a day.',t:"v",topic:"food"},
+  {id:230,w:"egg",ipa:"/eɡ/",vn:"quả trứng",ex:'She cooked two <em>eggs</em> for breakfast.',t:"n",topic:"food"},
+  {id:231,w:"eight",ipa:"/eɪt/",vn:"tám",ex:'I have <em>eight</em> pencils.',t:"num",topic:"school"},
+  {id:232,w:"eighteen",ipa:"/ˌeɪˈtiːn/",vn:"mười tám",ex:'She is <em>eighteen</em> years old.',t:"num",topic:"general"},
+  {id:233,w:"eighth",ipa:"/eɪtθ/",vn:"thứ tám",ex:'This is the <em>eighth</em> floor.',t:"ord",topic:"general"},
+  {id:234,w:"eighty",ipa:"/ˈeɪti/",vn:"tám mươi",ex:'Grandma is <em>eighty</em> years old.',t:"num",topic:"general"},
+  {id:235,w:"either",ipa:"/ˈaɪðər/",vn:"cái nào cũng được; hoặc",ex:'<em>Either</em> option is fine.',t:"det",topic:"general"},
+  {id:236,w:"elementary school",ipa:"/ˌelɪˈmentri skuːl/",vn:"trường tiểu học",ex:'She teaches at an <em>elementary school</em>.',t:"n",topic:"school"},
+  {id:237,w:"elephant",ipa:"/ˈelɪfənt/",vn:"con voi",ex:'The <em>elephant</em> has a long nose.',t:"n",topic:"nature"},
+  {id:238,w:"eleven",ipa:"/ɪˈlevn/",vn:"mười một",ex:'There are <em>eleven</em> players on the team.',t:"num",topic:"general"},
+  {id:239,w:"else",ipa:"/els/",vn:"khác, nữa",ex:'Is there anything <em>else</em> you need?',t:"adv",topic:"general"},
+  {id:240,w:"end",ipa:"/end/",vn:"kết thúc; cuối",ex:'The movie has a happy <em>end</em>.',t:"n/v",topic:"general"},
+  {id:241,w:"enjoy",ipa:"/ɪnˈdʒɔɪ/",vn:"thích, tận hưởng",ex:'I <em>enjoy</em> reading books.',t:"v",topic:"general"},
+  {id:242,w:"enough",ipa:"/ɪˈnʌf/",vn:"đủ, đủ rồi",ex:'I have <em>enough</em> money.',t:"det/adv",topic:"general"},
+  {id:243,w:"eraser",ipa:"/ɪˈreɪzər/",vn:"cục tẩy",ex:'Use an <em>eraser</em> to fix mistakes.',t:"n",topic:"school"},
+  {id:244,w:"eve",ipa:"/iːv/",vn:"đêm trước",ex:'New Year\'s <em>Eve</em> is fun.',t:"n",topic:"time"},
+  {id:245,w:"even",ipa:"/ˈiːvn/",vn:"thậm chí; bằng phẳng",ex:'<em>Even</em> he couldn\'t solve it.',t:"adv/adj",topic:"general"},
+  {id:246,w:"evening",ipa:"/ˈiːvnɪŋ/",vn:"buổi tối",ex:'Good <em>evening</em>, everyone.',t:"n",topic:"time"},
+  {id:247,w:"ever",ipa:"/ˈevər/",vn:"bao giờ, từng",ex:'Have you <em>ever</em> been to Japan?',t:"adv",topic:"general"},
+  {id:248,w:"every",ipa:"/ˈevri/",vn:"mỗi, từng",ex:'She reads <em>every</em> night.',t:"det",topic:"general"},
+  {id:249,w:"everyone",ipa:"/ˈevriwʌn/",vn:"tất cả mọi người",ex:'<em>Everyone</em> is welcome here.',t:"pron",topic:"general"},
+  {id:250,w:"everything",ipa:"/ˈevriθɪŋ/",vn:"tất cả mọi thứ",ex:'I know <em>everything</em>.',t:"pron",topic:"general"},
+  {id:251,w:"example",ipa:"/ɪɡˈzɑːmpl/",vn:"ví dụ",ex:'Give me an <em>example</em>.',t:"n",topic:"school"},
+  {id:252,w:"excellent",ipa:"/ˈeksələnt/",vn:"xuất sắc, tuyệt vời",ex:'Your work is <em>excellent</em>!',t:"adj",topic:"school"},
+  {id:253,w:"except",ipa:"/ɪkˈsept/",vn:"ngoại trừ",ex:'I like all foods <em>except</em> fish.',t:"prep",topic:"general"},
+  {id:254,w:"excited",ipa:"/ɪkˈsaɪtɪd/",vn:"hào hứng, phấn khích",ex:'She is very <em>excited</em> about the trip.',t:"adj",topic:"feeling"},
+  {id:255,w:"exciting",ipa:"/ɪkˈsaɪtɪŋ/",vn:"thú vị, hấp dẫn",ex:'The game was <em>exciting</em>.',t:"adj",topic:"general"},
+  {id:256,w:"excuse",ipa:"/ɪkˈskjuːz/",vn:"xin lỗi; lý do bào chữa",ex:'<em>Excuse</em> me, where is the bank?',t:"v/n",topic:"general"},
+  {id:257,w:"exercise",ipa:"/ˈeksəsaɪz/",vn:"tập thể dục; bài tập",ex:'He does <em>exercise</em> every morning.',t:"n/v",topic:"health"},
+  {id:258,w:"expensive",ipa:"/ɪkˈspensɪv/",vn:"đắt, mắc tiền",ex:'That watch is very <em>expensive</em>.',t:"adj",topic:"business"},
+  {id:259,w:"experience",ipa:"/ɪkˈspɪəriəns/",vn:"kinh nghiệm; trải nghiệm",ex:'She has ten years of <em>experience</em>.',t:"n",topic:"work"},
+  {id:260,w:"eye",ipa:"/aɪ/",vn:"con mắt",ex:'She has beautiful blue <em>eyes</em>.',t:"n",topic:"body"},
+  {id:261,w:"face",ipa:"/feɪs/",vn:"khuôn mặt; đối mặt",ex:'Wash your <em>face</em> before bed.',t:"n/v",topic:"body"},
+  {id:262,w:"fact",ipa:"/fækt/",vn:"sự thật, thực tế",ex:'That is a known <em>fact</em>.',t:"n",topic:"general"},
+  {id:263,w:"factory",ipa:"/ˈfæktri/",vn:"nhà máy, xưởng",ex:'He works at a car <em>factory</em>.',t:"n",topic:"work"},
+  {id:264,w:"fall",ipa:"/fɔːl/",vn:"ngã; rơi xuống; mùa thu (Mỹ)",ex:'Don\'t <em>fall</em> off the ladder.',t:"v/n",topic:"general"},
+  {id:265,w:"famous",ipa:"/ˈfeɪməs/",vn:"nổi tiếng",ex:'She is a <em>famous</em> singer.',t:"adj",topic:"general"},
+  {id:266,w:"farm",ipa:"/fɑːrm/",vn:"trang trại",ex:'My uncle lives on a <em>farm</em>.',t:"n",topic:"nature"},
+  {id:267,w:"farmer",ipa:"/ˈfɑːrmər/",vn:"nông dân",ex:'The <em>farmer</em> grows rice.',t:"n",topic:"work"},
+  {id:268,w:"fast",ipa:"/fɑːst/",vn:"nhanh",ex:'He runs very <em>fast</em>.',t:"adj/adv",topic:"general"},
+  {id:269,w:"fat",ipa:"/fæt/",vn:"béo, mập",ex:'He has a <em>fat</em> cat.',t:"adj",topic:"general"},
+  {id:270,w:"father",ipa:"/ˈfɑːðər/",vn:"bố, cha",ex:'My <em>father</em> is a doctor.',t:"n",topic:"family"},
+  {id:271,w:"favorite",ipa:"/ˈfeɪvərɪt/",vn:"yêu thích nhất",ex:'Pizza is my <em>favorite</em> food.',t:"adj/n",topic:"general"},
+  {id:272,w:"February",ipa:"/ˈfebrueri/",vn:"tháng Hai",ex:'Valentine\'s Day is in <em>February</em>.',t:"n",topic:"time"},
+  {id:273,w:"feel",ipa:"/fiːl/",vn:"cảm thấy",ex:'I <em>feel</em> happy today.',t:"v",topic:"feeling"},
+  {id:274,w:"festival",ipa:"/ˈfestɪvl/",vn:"lễ hội",ex:'The <em>festival</em> is next week.',t:"n",topic:"general"},
+  {id:275,w:"few",ipa:"/fjuː/",vn:"ít, một ít",ex:'Only a <em>few</em> students passed.',t:"det",topic:"general"},
+  {id:276,w:"fifteen",ipa:"/ˌfɪfˈtiːn/",vn:"mười lăm",ex:'She is <em>fifteen</em> years old.',t:"num",topic:"general"},
+  {id:277,w:"fifth",ipa:"/fɪfθ/",vn:"thứ năm",ex:'This is the <em>fifth</em> time.',t:"ord",topic:"general"},
+  {id:278,w:"fifty",ipa:"/ˈfɪfti/",vn:"năm mươi",ex:'He is <em>fifty</em> years old.',t:"num",topic:"general"},
+  {id:279,w:"fill",ipa:"/fɪl/",vn:"đổ đầy, làm đầy",ex:'<em>Fill</em> the cup with water.',t:"v",topic:"general"},
+  {id:280,w:"finally",ipa:"/ˈfaɪnəli/",vn:"cuối cùng",ex:'She <em>finally</em> finished the project.',t:"adv",topic:"general"},
+  {id:281,w:"find",ipa:"/faɪnd/",vn:"tìm thấy",ex:'I can\'t <em>find</em> my keys.',t:"v",topic:"general"},
+  {id:282,w:"fine",ipa:"/faɪn/",vn:"ổn, tốt; tiền phạt",ex:'I am <em>fine</em>, thank you.',t:"adj/n",topic:"general"},
+  {id:283,w:"finger",ipa:"/ˈfɪŋɡər/",vn:"ngón tay",ex:'She hurt her <em>finger</em>.',t:"n",topic:"body"},
+  {id:284,w:"finish",ipa:"/ˈfɪnɪʃ/",vn:"kết thúc, hoàn thành",ex:'Have you <em>finished</em> your homework?',t:"v",topic:"school"},
+  {id:285,w:"fire",ipa:"/faɪər/",vn:"lửa, đám cháy",ex:'The <em>fire</em> spread quickly.',t:"n",topic:"general"},
+  {id:286,w:"first",ipa:"/fɜːrst/",vn:"đầu tiên, thứ nhất",ex:'She came in <em>first</em> place.',t:"ord/adv",topic:"general"},
+  {id:287,w:"fish",ipa:"/fɪʃ/",vn:"cá; câu cá",ex:'He likes to eat <em>fish</em>.',t:"n/v",topic:"food"},
+  {id:288,w:"fisherman",ipa:"/ˈfɪʃərmən/",vn:"ngư dân, người đánh cá",ex:'The <em>fisherman</em> catches fish daily.',t:"n",topic:"work"},
+  {id:289,w:"five",ipa:"/faɪv/",vn:"năm",ex:'She has <em>five</em> cats.',t:"num",topic:"general"},
+  {id:290,w:"fix",ipa:"/fɪks/",vn:"sửa chữa; gắn chặt",ex:'Can you <em>fix</em> my bike?',t:"v",topic:"general"},
+  {id:291,w:"floor",ipa:"/flɔːr/",vn:"sàn nhà; tầng",ex:'Sweep the <em>floor</em> please.',t:"n",topic:"home"},
+  {id:292,w:"flower",ipa:"/ˈflaʊər/",vn:"bông hoa",ex:'She bought red <em>flowers</em>.',t:"n",topic:"nature"},
+  {id:293,w:"fly",ipa:"/flaɪ/",vn:"bay; con ruồi",ex:'Birds can <em>fly</em> high.',t:"v/n",topic:"nature"},
+  {id:294,w:"follow",ipa:"/ˈfɒləʊ/",vn:"theo sau, làm theo",ex:'<em>Follow</em> the instructions.',t:"v",topic:"general"},
+  {id:295,w:"food",ipa:"/fuːd/",vn:"thức ăn, đồ ăn",ex:'I love Vietnamese <em>food</em>.',t:"n",topic:"food"},
+  {id:296,w:"foot",ipa:"/fʊt/",vn:"bàn chân; feet (đơn vị)",ex:'My <em>foot</em> hurts.',t:"n",topic:"body"},
+  {id:297,w:"for",ipa:"/fɔːr/",vn:"cho, vì, trong (thời gian)",ex:'This gift is <em>for</em> you.',t:"prep",topic:"general"},
+  {id:298,w:"foreign",ipa:"/ˈfɒrən/",vn:"nước ngoài, ngoại quốc",ex:'She speaks a <em>foreign</em> language.',t:"adj",topic:"general"},
+  {id:299,w:"foreigner",ipa:"/ˈfɒrənər/",vn:"người nước ngoài",ex:'Many <em>foreigners</em> visit this city.',t:"n",topic:"general"},
+  {id:300,w:"forget",ipa:"/fəˈɡet/",vn:"quên",ex:'Don\'t <em>forget</em> your umbrella.',t:"v",topic:"general"},
+  {id:301,w:"fork",ipa:"/fɔːrk/",vn:"cái nĩa",ex:'Use a <em>fork</em> to eat the salad.',t:"n",topic:"food"},
+  {id:302,w:"forty",ipa:"/ˈfɔːrti/",vn:"bốn mươi",ex:'There are <em>forty</em> students.',t:"num",topic:"general"},
+  {id:303,w:"four",ipa:"/fɔːr/",vn:"bốn",ex:'I have <em>four</em> brothers.',t:"num",topic:"general"},
+  {id:304,w:"fourteen",ipa:"/ˌfɔːrˈtiːn/",vn:"mười bốn",ex:'She is <em>fourteen</em> years old.',t:"num",topic:"general"},
+  {id:305,w:"fourth",ipa:"/fɔːrθ/",vn:"thứ tư",ex:'July is the <em>fourth</em> month.',t:"ord",topic:"general"},
+  {id:306,w:"fresh",ipa:"/freʃ/",vn:"tươi, mới",ex:'Buy <em>fresh</em> vegetables at the market.',t:"adj",topic:"food"},
+  {id:307,w:"Friday",ipa:"/ˈfraɪdeɪ/",vn:"thứ Sáu",ex:'We have no school on <em>Friday</em>.',t:"n",topic:"time"},
+  {id:308,w:"friend",ipa:"/frend/",vn:"bạn bè",ex:'She is my best <em>friend</em>.',t:"n",topic:"social"},
+  {id:309,w:"from",ipa:"/frɒm/",vn:"từ, từ chỗ",ex:'She is <em>from</em> Vietnam.',t:"prep",topic:"general"},
+  {id:310,w:"front",ipa:"/frʌnt/",vn:"phía trước",ex:'She sits in the <em>front</em> row.',t:"n/adj",topic:"general"},
+  {id:311,w:"fruit",ipa:"/fruːt/",vn:"hoa quả, trái cây",ex:'Eat more <em>fruit</em> every day.',t:"n",topic:"food"},
+  {id:312,w:"full",ipa:"/fʊl/",vn:"đầy, no",ex:'The glass is <em>full</em> of water.',t:"adj",topic:"general"},
+  {id:313,w:"fun",ipa:"/fʌn/",vn:"vui vẻ, thú vị",ex:'Swimming is so much <em>fun</em>!',t:"n/adj",topic:"general"},
+  {id:314,w:"funny",ipa:"/ˈfʌni/",vn:"buồn cười, hài hước",ex:'He tells very <em>funny</em> jokes.',t:"adj",topic:"general"},
+  {id:315,w:"garbage",ipa:"/ˈɡɑːrbɪdʒ/",vn:"rác thải",ex:'Take out the <em>garbage</em>.',t:"n",topic:"home"},
+  {id:316,w:"garden",ipa:"/ˈɡɑːrdn/",vn:"khu vườn",ex:'She grows roses in her <em>garden</em>.',t:"n",topic:"home"},
+  {id:317,w:"gas",ipa:"/ɡæs/",vn:"xăng; khí ga",ex:'Fill up the <em>gas</em> tank.',t:"n",topic:"travel"},
+  {id:318,w:"get",ipa:"/ɡet/",vn:"lấy, nhận được, trở nên",ex:'Did you <em>get</em> my message?',t:"v",topic:"general"},
+  {id:319,w:"gift",ipa:"/ɡɪft/",vn:"quà tặng",ex:'He gave her a beautiful <em>gift</em>.',t:"n",topic:"general"},
+  {id:320,w:"give",ipa:"/ɡɪv/",vn:"cho, tặng",ex:'Please <em>give</em> me the book.',t:"v",topic:"general"},
+  {id:321,w:"glad",ipa:"/ɡlæd/",vn:"vui mừng",ex:'I am <em>glad</em> you came.',t:"adj",topic:"feeling"},
+  {id:322,w:"glass",ipa:"/ɡlɑːs/",vn:"kính; cái ly",ex:'Give me a <em>glass</em> of water.',t:"n",topic:"home"},
+  {id:323,w:"glove",ipa:"/ɡlʌv/",vn:"găng tay",ex:'She wears <em>gloves</em> in winter.',t:"n",topic:"general"},
+  {id:324,w:"go",ipa:"/ɡəʊ/",vn:"đi",ex:'Let\'s <em>go</em> to the park.',t:"v",topic:"general"},
+  {id:325,w:"goat",ipa:"/ɡəʊt/",vn:"con dê",ex:'The <em>goat</em> eats grass.',t:"n",topic:"nature"},
+  {id:326,w:"good",ipa:"/ɡʊd/",vn:"tốt, giỏi",ex:'She is a very <em>good</em> student.',t:"adj",topic:"general"},
+  {id:327,w:"grade",ipa:"/ɡreɪd/",vn:"điểm số; lớp học",ex:'I got a good <em>grade</em> on my test.',t:"n",topic:"school"},
+  {id:328,w:"grandfather",ipa:"/ˈɡrændfɑːðər/",vn:"ông nội/ngoại",ex:'My <em>grandfather</em> is 80 years old.',t:"n",topic:"family"},
+  {id:329,w:"grass",ipa:"/ɡrɑːs/",vn:"cỏ",ex:'The <em>grass</em> is green.',t:"n",topic:"nature"},
+  {id:330,w:"gray",ipa:"/ɡreɪ/",vn:"màu xám",ex:'The sky looks <em>gray</em> today.',t:"adj",topic:"general"},
+  {id:331,w:"great",ipa:"/ɡreɪt/",vn:"tuyệt, tốt lắm",ex:'You did a <em>great</em> job!',t:"adj",topic:"general"},
+  {id:332,w:"green",ipa:"/ɡriːn/",vn:"màu xanh lá cây",ex:'She likes <em>green</em> tea.',t:"adj",topic:"general"},
+  {id:333,w:"ground",ipa:"/ɡraʊnd/",vn:"mặt đất, nền",ex:'Sit on the <em>ground</em>.',t:"n",topic:"nature"},
+  {id:334,w:"group",ipa:"/ɡruːp/",vn:"nhóm",ex:'Work in a <em>group</em> of four.',t:"n",topic:"school"},
+  {id:335,w:"grow",ipa:"/ɡrəʊ/",vn:"lớn lên, phát triển",ex:'Children <em>grow</em> quickly.',t:"v",topic:"general"},
+  {id:336,w:"guess",ipa:"/ɡes/",vn:"đoán",ex:'Can you <em>guess</em> the answer?',t:"v",topic:"general"},
+  {id:337,w:"habit",ipa:"/ˈhæbɪt/",vn:"thói quen",ex:'Reading is a good <em>habit</em>.',t:"n",topic:"general"},
+  {id:338,w:"hair",ipa:"/heər/",vn:"mái tóc",ex:'She has long black <em>hair</em>.',t:"n",topic:"body"},
+  {id:339,w:"half",ipa:"/hɑːf/",vn:"một nửa",ex:'Cut the apple in <em>half</em>.',t:"n/adj",topic:"general"},
+  {id:340,w:"ham",ipa:"/hæm/",vn:"giăm bông",ex:'She had a <em>ham</em> sandwich.',t:"n",topic:"food"},
+  {id:341,w:"hamburger",ipa:"/ˈhæmbɜːrɡər/",vn:"bánh mì kẹp thịt",ex:'I ordered a <em>hamburger</em>.',t:"n",topic:"food"},
+  {id:342,w:"hand",ipa:"/hænd/",vn:"bàn tay",ex:'Raise your <em>hand</em> if you know.',t:"n",topic:"body"},
+  {id:343,w:"handsome",ipa:"/ˈhænsəm/",vn:"điển trai, đẹp trai",ex:'He is very <em>handsome</em>.',t:"adj",topic:"general"},
+  {id:344,w:"happen",ipa:"/ˈhæpən/",vn:"xảy ra",ex:'What will <em>happen</em> next?',t:"v",topic:"general"},
+  {id:345,w:"hard",ipa:"/hɑːrd/",vn:"khó; cứng; chăm chỉ",ex:'She works very <em>hard</em>.',t:"adj/adv",topic:"general"},
+  {id:346,w:"hat",ipa:"/hæt/",vn:"cái mũ",ex:'Wear a <em>hat</em> in the sun.',t:"n",topic:"general"},
+  {id:347,w:"hate",ipa:"/heɪt/",vn:"ghét",ex:'I <em>hate</em> waking up early.',t:"v",topic:"feeling"},
+  {id:348,w:"have",ipa:"/hæv/",vn:"có",ex:'I <em>have</em> two brothers.',t:"v",topic:"general"},
+  {id:349,w:"he",ipa:"/hiː/",vn:"anh ấy, ông ấy",ex:'<em>He</em> is my teacher.',t:"pron",topic:"general"},
+  {id:350,w:"head",ipa:"/hed/",vn:"cái đầu; đầu",ex:'My <em>head</em> hurts.',t:"n",topic:"body"},
+  {id:351,w:"headache",ipa:"/ˈhedeɪk/",vn:"đau đầu",ex:'I have a terrible <em>headache</em>.',t:"n",topic:"health"},
+  {id:352,w:"health",ipa:"/helθ/",vn:"sức khỏe",ex:'Good <em>health</em> is important.',t:"n",topic:"health"},
+  {id:353,w:"healthy",ipa:"/ˈhelθi/",vn:"khỏe mạnh",ex:'Eating well keeps you <em>healthy</em>.',t:"adj",topic:"health"},
+  {id:354,w:"hear",ipa:"/hɪər/",vn:"nghe, nghe thấy",ex:'Can you <em>hear</em> me?',t:"v",topic:"general"},
+  {id:355,w:"heart",ipa:"/hɑːrt/",vn:"trái tim",ex:'Your <em>heart</em> beats 70 times a minute.',t:"n",topic:"body"},
+  {id:356,w:"heat",ipa:"/hiːt/",vn:"hơi nóng; làm nóng",ex:'The <em>heat</em> in summer is strong.',t:"n/v",topic:"nature"},
+  {id:357,w:"heavy",ipa:"/ˈhevi/",vn:"nặng",ex:'This bag is very <em>heavy</em>.',t:"adj",topic:"general"},
+  {id:358,w:"help",ipa:"/help/",vn:"giúp đỡ",ex:'Can you <em>help</em> me?',t:"v/n",topic:"general"},
+  {id:359,w:"helpful",ipa:"/ˈhelpfl/",vn:"hữu ích, giúp ích",ex:'She is always very <em>helpful</em>.',t:"adj",topic:"general"},
+  {id:360,w:"here",ipa:"/hɪər/",vn:"ở đây, đây",ex:'Come <em>here</em>, please.',t:"adv",topic:"general"},
+  {id:361,w:"hide",ipa:"/haɪd/",vn:"trốn, giấu",ex:'Don\'t <em>hide</em> the truth.',t:"v",topic:"general"},
+  {id:362,w:"high",ipa:"/haɪ/",vn:"cao",ex:'The mountain is very <em>high</em>.',t:"adj",topic:"general"},
+  {id:363,w:"hill",ipa:"/hɪl/",vn:"ngọn đồi",ex:'They climbed the <em>hill</em>.',t:"n",topic:"nature"},
+  {id:364,w:"history",ipa:"/ˈhɪstri/",vn:"lịch sử",ex:'<em>History</em> is my favorite subject.',t:"n",topic:"school"},
+  {id:365,w:"hit",ipa:"/hɪt/",vn:"đánh, va chạm",ex:'He <em>hit</em> the ball hard.',t:"v",topic:"sports"},
+  {id:366,w:"hobby",ipa:"/ˈhɒbi/",vn:"sở thích, thú vui",ex:'My <em>hobby</em> is painting.',t:"n",topic:"hobby"},
+  {id:367,w:"hold",ipa:"/həʊld/",vn:"cầm, giữ",ex:'<em>Hold</em> my hand.',t:"v",topic:"general"},
+  {id:368,w:"holiday",ipa:"/ˈhɒlɪdeɪ/",vn:"ngày nghỉ lễ",ex:'We travel on <em>holidays</em>.',t:"n",topic:"time"},
+  {id:369,w:"home",ipa:"/həʊm/",vn:"nhà, tổ ấm",ex:'I feel safe at <em>home</em>.',t:"n",topic:"home"},
+  {id:370,w:"homework",ipa:"/ˈhəʊmwɜːrk/",vn:"bài tập về nhà",ex:'Finish your <em>homework</em> first.',t:"n",topic:"school"},
+  {id:371,w:"honest",ipa:"/ˈɒnɪst/",vn:"trung thực",ex:'Always be <em>honest</em>.',t:"adj",topic:"general"},
+  {id:372,w:"hope",ipa:"/həʊp/",vn:"hy vọng",ex:'I <em>hope</em> to visit Japan.',t:"v/n",topic:"feeling"},
+  {id:373,w:"horse",ipa:"/hɔːrs/",vn:"con ngựa",ex:'She rides a white <em>horse</em>.',t:"n",topic:"nature"},
+  {id:374,w:"hospital",ipa:"/ˈhɒspɪtl/",vn:"bệnh viện",ex:'He was taken to the <em>hospital</em>.',t:"n",topic:"health"},
+  {id:375,w:"hot",ipa:"/hɒt/",vn:"nóng",ex:'This soup is very <em>hot</em>.',t:"adj",topic:"general"},
+  {id:376,w:"hotel",ipa:"/həʊˈtel/",vn:"khách sạn",ex:'We stayed in a luxury <em>hotel</em>.',t:"n",topic:"travel"},
+  {id:377,w:"hour",ipa:"/aʊər/",vn:"một giờ (60 phút)",ex:'The trip takes two <em>hours</em>.',t:"n",topic:"time"},
+  {id:378,w:"house",ipa:"/haʊs/",vn:"ngôi nhà",ex:'They live in a big <em>house</em>.',t:"n",topic:"home"},
+  {id:379,w:"how",ipa:"/haʊ/",vn:"như thế nào, bao nhiêu",ex:'<em>How</em> are you?',t:"adv",topic:"general"},
+  {id:380,w:"however",ipa:"/haʊˈevər/",vn:"tuy nhiên",ex:'He is tired. <em>However</em>, he keeps going.',t:"adv",topic:"general"},
+  {id:381,w:"hundred",ipa:"/ˈhʌndrəd/",vn:"một trăm",ex:'There are one <em>hundred</em> students.',t:"num",topic:"general"},
+  {id:382,w:"hungry",ipa:"/ˈhʌŋɡri/",vn:"đói",ex:'I am very <em>hungry</em>.',t:"adj",topic:"general"},
+  {id:383,w:"hurry",ipa:"/ˈhʌri/",vn:"vội vàng, nhanh lên",ex:'<em>Hurry</em> up or we\'ll be late.',t:"v",topic:"general"},
+  {id:384,w:"hurt",ipa:"/hɜːrt/",vn:"đau; làm đau",ex:'My leg <em>hurts</em>.',t:"v",topic:"health"},
+  {id:385,w:"husband",ipa:"/ˈhʌzbənd/",vn:"chồng",ex:'Her <em>husband</em> is a doctor.',t:"n",topic:"family"},
+  {id:386,w:"ice",ipa:"/aɪs/",vn:"nước đá, băng",ex:'She puts <em>ice</em> in her drink.',t:"n",topic:"general"},
+  {id:387,w:"idea",ipa:"/aɪˈdɪə/",vn:"ý tưởng",ex:'That\'s a great <em>idea</em>!',t:"n",topic:"general"},
+  {id:388,w:"if",ipa:"/ɪf/",vn:"nếu",ex:'<em>If</em> it rains, stay inside.',t:"conj",topic:"general"},
+  {id:389,w:"important",ipa:"/ɪmˈpɔːrtnt/",vn:"quan trọng",ex:'Health is very <em>important</em>.',t:"adj",topic:"general"},
+  {id:390,w:"inside",ipa:"/ɪnˈsaɪd/",vn:"bên trong",ex:'Come <em>inside</em>, it\'s cold.',t:"prep/adv",topic:"general"},
+  {id:391,w:"interest",ipa:"/ˈɪntrəst/",vn:"lợi ích; lãi suất; quan tâm",ex:'He has an <em>interest</em> in music.',t:"n/v",topic:"general"},
+  {id:392,w:"interested",ipa:"/ˈɪntrəstɪd/",vn:"quan tâm, hứng thú",ex:'She is <em>interested</em> in science.',t:"adj",topic:"feeling"},
+  {id:393,w:"interesting",ipa:"/ˈɪntrəstɪŋ/",vn:"thú vị, hấp dẫn",ex:'This book is very <em>interesting</em>.',t:"adj",topic:"general"},
+  {id:394,w:"into",ipa:"/ˈɪntə/",vn:"vào trong",ex:'She walked <em>into</em> the room.',t:"prep",topic:"general"},
+  {id:395,w:"island",ipa:"/ˈaɪlənd/",vn:"hòn đảo",ex:'They live on a small <em>island</em>.',t:"n",topic:"nature"},
+  {id:396,w:"it",ipa:"/ɪt/",vn:"nó, cái đó",ex:'<em>It</em> is a beautiful day.',t:"pron",topic:"general"},
+  {id:397,w:"jacket",ipa:"/ˈdʒækɪt/",vn:"áo khoác ngắn",ex:'He wears a leather <em>jacket</em>.',t:"n",topic:"general"},
+  {id:398,w:"January",ipa:"/ˈdʒænjueri/",vn:"tháng Một",ex:'New Year starts in <em>January</em>.',t:"n",topic:"time"},
+  {id:399,w:"jeans",ipa:"/dʒiːnz/",vn:"quần jeans",ex:'She always wears <em>jeans</em>.',t:"n",topic:"general"},
+  {id:400,w:"job",ipa:"/dʒɒb/",vn:"công việc, nghề nghiệp",ex:'He got a new <em>job</em>.',t:"n",topic:"work"},
+  {id:401,w:"jog",ipa:"/dʒɒɡ/",vn:"chạy bộ",ex:'She <em>jogs</em> every morning.',t:"v",topic:"sports"},
+  {id:402,w:"join",ipa:"/dʒɔɪn/",vn:"tham gia",ex:'Please <em>join</em> our club.',t:"v",topic:"social"},
+  {id:403,w:"joy",ipa:"/dʒɔɪ/",vn:"niềm vui",ex:'She was full of <em>joy</em>.',t:"n",topic:"feeling"},
+  {id:404,w:"juice",ipa:"/dʒuːs/",vn:"nước ép",ex:'I drink orange <em>juice</em> daily.',t:"n",topic:"food"},
+  {id:405,w:"July",ipa:"/dʒuˈlaɪ/",vn:"tháng Bảy",ex:'It is very hot in <em>July</em>.',t:"n",topic:"time"},
+  {id:406,w:"jump",ipa:"/dʒʌmp/",vn:"nhảy",ex:'Can you <em>jump</em> high?',t:"v",topic:"sports"},
+  {id:407,w:"June",ipa:"/dʒuːn/",vn:"tháng Sáu",ex:'School ends in <em>June</em>.',t:"n",topic:"time"},
+  {id:408,w:"junior high school",ipa:"/ˌdʒuːniər haɪ skuːl/",vn:"trường trung học cơ sở",ex:'My sister is in <em>junior high school</em>.',t:"n",topic:"school"},
+  {id:409,w:"just",ipa:"/dʒʌst/",vn:"vừa mới; chỉ",ex:'I <em>just</em> finished my homework.',t:"adv",topic:"general"},
+  {id:410,w:"keep",ipa:"/kiːp/",vn:"giữ, tiếp tục",ex:'<em>Keep</em> your room clean.',t:"v",topic:"general"},
+  {id:411,w:"key",ipa:"/kiː/",vn:"chìa khóa; quan trọng",ex:'She lost her door <em>key</em>.',t:"n",topic:"home"},
+  {id:412,w:"kick",ipa:"/kɪk/",vn:"đá (chân)",ex:'<em>Kick</em> the ball into the goal.',t:"v",topic:"sports"},
+  {id:413,w:"kid",ipa:"/kɪd/",vn:"đứa trẻ; đùa",ex:'The <em>kids</em> are playing outside.',t:"n/v",topic:"family"},
+  {id:414,w:"kill",ipa:"/kɪl/",vn:"giết",ex:'Mosquitoes can <em>kill</em> by spreading disease.',t:"v",topic:"general"},
+  {id:415,w:"kilogram",ipa:"/ˈkɪləɡræm/",vn:"kilôgam",ex:'She weighs 50 <em>kilograms</em>.',t:"n",topic:"general"},
+  {id:416,w:"kind",ipa:"/kaɪnd/",vn:"tốt bụng; loại, dạng",ex:'She is always very <em>kind</em>.',t:"adj/n",topic:"general"},
+  {id:417,w:"king",ipa:"/kɪŋ/",vn:"vua",ex:'The <em>king</em> ruled the land.',t:"n",topic:"general"},
+  {id:418,w:"kiss",ipa:"/kɪs/",vn:"hôn; nụ hôn",ex:'She gave her baby a <em>kiss</em>.',t:"v/n",topic:"family"},
+  {id:419,w:"kite",ipa:"/kaɪt/",vn:"cái diều",ex:'He flies a <em>kite</em> in the park.',t:"n",topic:"hobby"},
+  {id:420,w:"knee",ipa:"/niː/",vn:"đầu gối",ex:'He hurt his <em>knee</em> playing soccer.',t:"n",topic:"body"},
+  {id:421,w:"knife",ipa:"/naɪf/",vn:"con dao",ex:'Use a <em>knife</em> to cut the bread.',t:"n",topic:"food"},
+  {id:422,w:"knock",ipa:"/nɒk/",vn:"gõ cửa",ex:'<em>Knock</em> before you enter.',t:"v",topic:"general"},
+  {id:423,w:"know",ipa:"/nəʊ/",vn:"biết",ex:'Do you <em>know</em> the answer?',t:"v",topic:"general"},
+  {id:424,w:"knowledge",ipa:"/ˈnɒlɪdʒ/",vn:"kiến thức",ex:'<em>Knowledge</em> is power.',t:"n",topic:"education"},
+  {id:425,w:"lake",ipa:"/leɪk/",vn:"cái hồ",ex:'They swim in the <em>lake</em>.',t:"n",topic:"nature"},
+  {id:426,w:"lamp",ipa:"/læmp/",vn:"cái đèn",ex:'Turn on the <em>lamp</em>.',t:"n",topic:"home"},
+  {id:427,w:"land",ipa:"/lænd/",vn:"đất đai; hạ cánh",ex:'The plane will <em>land</em> soon.',t:"n/v",topic:"travel"},
+  {id:428,w:"language",ipa:"/ˈlæŋɡwɪdʒ/",vn:"ngôn ngữ, tiếng",ex:'She speaks two <em>languages</em>.',t:"n",topic:"education"},
+  {id:429,w:"large",ipa:"/lɑːrdʒ/",vn:"lớn, rộng lớn",ex:'They live in a <em>large</em> house.',t:"adj",topic:"general"},
+  {id:430,w:"last",ipa:"/lɑːst/",vn:"cuối, gần đây nhất; kéo dài",ex:'This is the <em>last</em> question.',t:"adj/v",topic:"general"},
+  {id:431,w:"late",ipa:"/leɪt/",vn:"muộn, trễ",ex:'He was <em>late</em> for school.',t:"adj/adv",topic:"time"},
+  {id:432,w:"later",ipa:"/ˈleɪtər/",vn:"sau, sau này",ex:'See you <em>later</em>!',t:"adv",topic:"time"},
+  {id:433,w:"laugh",ipa:"/lɑːf/",vn:"cười",ex:'They all <em>laugh</em> together.',t:"v",topic:"feeling"},
+  {id:434,w:"lazy",ipa:"/ˈleɪzi/",vn:"lười biếng",ex:'Don\'t be so <em>lazy</em>.',t:"adj",topic:"general"},
+  {id:435,w:"lead",ipa:"/liːd/",vn:"dẫn dắt, chỉ huy",ex:'She will <em>lead</em> the team.',t:"v",topic:"work"},
+  {id:436,w:"leader",ipa:"/ˈliːdər/",vn:"người lãnh đạo",ex:'He is a good <em>leader</em>.',t:"n",topic:"work"},
+  {id:437,w:"learn",ipa:"/lɜːrn/",vn:"học, học hỏi",ex:'I want to <em>learn</em> English.',t:"v",topic:"education"},
+  {id:438,w:"least",ipa:"/liːst/",vn:"ít nhất",ex:'At <em>least</em> try once.',t:"adv/det",topic:"general"},
+  {id:439,w:"leave",ipa:"/liːv/",vn:"rời đi; để lại",ex:'She will <em>leave</em> tomorrow.',t:"v",topic:"general"},
+  {id:440,w:"left",ipa:"/left/",vn:"bên trái; còn lại",ex:'Turn <em>left</em> at the corner.',t:"adj/adv/n",topic:"general"},
+  {id:441,w:"leg",ipa:"/leɡ/",vn:"cái chân",ex:'He broke his <em>leg</em>.',t:"n",topic:"body"},
+  {id:442,w:"lemon",ipa:"/ˈlemən/",vn:"quả chanh vàng",ex:'Add <em>lemon</em> to your tea.',t:"n",topic:"food"},
+  {id:443,w:"lend",ipa:"/lend/",vn:"cho mượn",ex:'Can you <em>lend</em> me your pen?',t:"v",topic:"general"},
+  {id:444,w:"less",ipa:"/les/",vn:"ít hơn",ex:'Eat <em>less</em> sugar.',t:"adv/det",topic:"general"},
+  {id:445,w:"lesson",ipa:"/ˈlesn/",vn:"bài học",ex:'Today\'s <em>lesson</em> is about verbs.',t:"n",topic:"school"},
+  {id:446,w:"let",ipa:"/let/",vn:"cho phép, để",ex:'<em>Let</em> me try.',t:"v",topic:"general"},
+  {id:447,w:"letter",ipa:"/ˈletər/",vn:"lá thư; chữ cái",ex:'She wrote a <em>letter</em> to her friend.',t:"n",topic:"general"},
+  {id:448,w:"library",ipa:"/ˈlaɪbreri/",vn:"thư viện",ex:'Study at the <em>library</em>.',t:"n",topic:"school"},
+  {id:449,w:"lie",ipa:"/laɪ/",vn:"nằm; nói dối",ex:'Don\'t <em>lie</em> to your parents.',t:"v",topic:"general"},
+  {id:450,w:"life",ipa:"/laɪf/",vn:"cuộc sống, cuộc đời",ex:'She leads a healthy <em>life</em>.',t:"n",topic:"general"},
+  {id:451,w:"light",ipa:"/laɪt/",vn:"ánh sáng; nhẹ; bật đèn",ex:'Turn on the <em>light</em>.',t:"n/adj/v",topic:"home"},
+  {id:452,w:"line",ipa:"/laɪn/",vn:"đường kẻ; hàng, dãy",ex:'Stand in a <em>line</em>.',t:"n",topic:"general"},
+  {id:453,w:"lion",ipa:"/ˈlaɪən/",vn:"sư tử",ex:'The <em>lion</em> roared loudly.',t:"n",topic:"nature"},
+  {id:454,w:"lip",ipa:"/lɪp/",vn:"môi",ex:'She has red <em>lips</em>.',t:"n",topic:"body"},
+  {id:455,w:"list",ipa:"/lɪst/",vn:"danh sách",ex:'Write a <em>list</em> of things to buy.',t:"n",topic:"general"},
+  {id:456,w:"listen",ipa:"/ˈlɪsn/",vn:"lắng nghe",ex:'<em>Listen</em> carefully to the teacher.',t:"v",topic:"school"},
+  {id:457,w:"little",ipa:"/ˈlɪtl/",vn:"nhỏ; ít",ex:'She has a <em>little</em> cat.',t:"adj/adv",topic:"general"},
+  {id:458,w:"live",ipa:"/lɪv/",vn:"sống, sinh sống",ex:'She <em>lives</em> in Hanoi.',t:"v",topic:"general"},
+  {id:459,w:"living room",ipa:"/ˈlɪvɪŋ ruːm/",vn:"phòng khách",ex:'We watch TV in the <em>living room</em>.',t:"n",topic:"home"},
+  {id:460,w:"lonely",ipa:"/ˈləʊnli/",vn:"cô đơn",ex:'She feels <em>lonely</em> without friends.',t:"adj",topic:"feeling"},
+  {id:461,w:"long",ipa:"/lɒŋ/",vn:"dài; lâu",ex:'She has <em>long</em> hair.',t:"adj",topic:"general"},
+  {id:462,w:"look",ipa:"/lʊk/",vn:"nhìn; trông",ex:'<em>Look</em> at the board.',t:"v",topic:"general"},
+  {id:463,w:"lose",ipa:"/luːz/",vn:"thua; mất đi",ex:'Don\'t <em>lose</em> your keys.',t:"v",topic:"general"},
+  {id:464,w:"loud",ipa:"/laʊd/",vn:"ồn ào, to tiếng",ex:'The music is too <em>loud</em>.',t:"adj",topic:"general"},
+  {id:465,w:"love",ipa:"/lʌv/",vn:"yêu; tình yêu",ex:'I <em>love</em> my family.',t:"v/n",topic:"feeling"},
+  {id:466,w:"low",ipa:"/ləʊ/",vn:"thấp",ex:'The price is very <em>low</em>.',t:"adj",topic:"general"},
+  {id:467,w:"lucky",ipa:"/ˈlʌki/",vn:"may mắn",ex:'She is very <em>lucky</em>.',t:"adj",topic:"general"},
+  {id:468,w:"lunch",ipa:"/lʌntʃ/",vn:"bữa trưa",ex:'We have <em>lunch</em> at noon.',t:"n",topic:"food"},
+  {id:469,w:"machine",ipa:"/məˈʃiːn/",vn:"máy móc",ex:'This <em>machine</em> washes clothes.',t:"n",topic:"general"},
+  {id:470,w:"magic",ipa:"/ˈmædʒɪk/",vn:"phép màu; ma thuật",ex:'The show was pure <em>magic</em>.',t:"n/adj",topic:"general"},
+  {id:471,w:"mailman",ipa:"/ˈmeɪlmæn/",vn:"người đưa thư",ex:'The <em>mailman</em> delivers letters.',t:"n",topic:"work"},
+  {id:472,w:"make",ipa:"/meɪk/",vn:"làm, tạo ra",ex:'She can <em>make</em> delicious food.',t:"v",topic:"general"},
+  {id:473,w:"March",ipa:"/mɑːrtʃ/",vn:"tháng Ba",ex:'Spring starts in <em>March</em>.',t:"n",topic:"time"},
+  {id:474,w:"mark",ipa:"/mɑːrk/",vn:"điểm số; đánh dấu",ex:'She got a high <em>mark</em>.',t:"n/v",topic:"school"},
+  {id:475,w:"market",ipa:"/ˈmɑːrkɪt/",vn:"chợ, thị trường",ex:'She buys fish at the <em>market</em>.',t:"n",topic:"food"},
+  {id:476,w:"married",ipa:"/ˈmærid/",vn:"đã kết hôn",ex:'They got <em>married</em> last year.',t:"adj",topic:"family"},
+  {id:477,w:"math",ipa:"/mæθ/",vn:"môn toán",ex:'I love <em>math</em> class.',t:"n",topic:"school"},
+  {id:478,w:"matter",ipa:"/ˈmætər/",vn:"vấn đề; quan trọng",ex:'What\'s the <em>matter</em>?',t:"n/v",topic:"general"},
+  {id:479,w:"May",ipa:"/meɪ/",vn:"tháng Năm; có thể",ex:'It is warm in <em>May</em>.',t:"n/v",topic:"time"},
+  {id:480,w:"maybe",ipa:"/ˈmeɪbi/",vn:"có lẽ, có thể",ex:'<em>Maybe</em> she is busy.',t:"adv",topic:"general"},
+  {id:481,w:"meal",ipa:"/miːl/",vn:"bữa ăn",ex:'We have three <em>meals</em> a day.',t:"n",topic:"food"},
+  {id:482,w:"mean",ipa:"/miːn/",vn:"có nghĩa là; độc ác",ex:'What does this word <em>mean</em>?',t:"v/adj",topic:"general"},
+  {id:483,w:"meat",ipa:"/miːt/",vn:"thịt",ex:'He doesn\'t eat <em>meat</em>.',t:"n",topic:"food"},
+  {id:484,w:"medicine",ipa:"/ˈmedsn/",vn:"thuốc; y học",ex:'Take this <em>medicine</em> twice a day.',t:"n",topic:"health"},
+  {id:485,w:"medium",ipa:"/ˈmiːdiəm/",vn:"vừa, trung bình",ex:'She wears a <em>medium</em> size.',t:"adj/n",topic:"general"},
+  {id:486,w:"meet",ipa:"/miːt/",vn:"gặp gỡ",ex:'Nice to <em>meet</em> you.',t:"v",topic:"social"},
+  {id:487,w:"meeting",ipa:"/ˈmiːtɪŋ/",vn:"cuộc họp",ex:'She has a <em>meeting</em> at 10.',t:"n",topic:"work"},
+  {id:488,w:"menu",ipa:"/ˈmenjuː/",vn:"thực đơn",ex:'Let\'s look at the <em>menu</em>.',t:"n",topic:"food"},
+  {id:489,w:"mile",ipa:"/maɪl/",vn:"dặm (đơn vị đo)",ex:'She ran three <em>miles</em>.',t:"n",topic:"sports"},
+  {id:490,w:"milk",ipa:"/mɪlk/",vn:"sữa",ex:'She drinks a glass of <em>milk</em> daily.',t:"n",topic:"food"},
+  {id:491,w:"million",ipa:"/ˈmɪljən/",vn:"một triệu",ex:'The city has a <em>million</em> people.',t:"num",topic:"general"},
+  {id:492,w:"mind",ipa:"/maɪnd/",vn:"tâm trí; để ý",ex:'Keep an open <em>mind</em>.',t:"n/v",topic:"general"},
+  {id:493,w:"minute",ipa:"/ˈmɪnɪt/",vn:"một phút",ex:'Wait a <em>minute</em>!',t:"n",topic:"time"},
+  {id:494,w:"mistake",ipa:"/mɪˈsteɪk/",vn:"lỗi, sai lầm",ex:'Everyone makes <em>mistakes</em>.',t:"n",topic:"general"},
+  {id:495,w:"modern",ipa:"/ˈmɒdn/",vn:"hiện đại",ex:'She lives in a <em>modern</em> apartment.',t:"adj",topic:"general"},
+  {id:496,w:"moment",ipa:"/ˈməʊmənt/",vn:"khoảnh khắc; lát",ex:'Just a <em>moment</em>, please.',t:"n",topic:"time"},
+  {id:497,w:"money",ipa:"/ˈmʌni/",vn:"tiền",ex:'He saves <em>money</em> every month.',t:"n",topic:"business"},
+  {id:498,w:"month",ipa:"/mʌnθ/",vn:"tháng",ex:'There are twelve <em>months</em> in a year.',t:"n",topic:"time"},
+  {id:499,w:"moon",ipa:"/muːn/",vn:"mặt trăng",ex:'The <em>moon</em> is full tonight.',t:"n",topic:"nature"},
+  {id:500,w:"more",ipa:"/mɔːr/",vn:"nhiều hơn, thêm",ex:'I want <em>more</em> rice, please.',t:"det/adv",topic:"general"},
+  {id:501,w:"morning",ipa:"/ˈmɔːrnɪŋ/",vn:"buổi sáng",ex:'Good <em>morning</em>!',t:"n",topic:"time"},
+  {id:502,w:"most",ipa:"/məʊst/",vn:"nhất, nhiều nhất",ex:'She is the <em>most</em> talented student.',t:"det/adv",topic:"general"},
+  {id:503,w:"mother",ipa:"/ˈmʌðər/",vn:"mẹ",ex:'My <em>mother</em> cooks great food.',t:"n",topic:"family"},
+  {id:504,w:"motorcycle",ipa:"/ˈməʊtəsaɪkl/",vn:"xe máy",ex:'He rides a <em>motorcycle</em>.',t:"n",topic:"travel"},
+  {id:505,w:"mountain",ipa:"/ˈmaʊntən/",vn:"ngọn núi",ex:'They climbed the <em>mountain</em>.',t:"n",topic:"nature"},
+  {id:506,w:"mouse",ipa:"/maʊs/",vn:"con chuột",ex:'There is a <em>mouse</em> in the kitchen.',t:"n",topic:"nature"},
+  {id:507,w:"mouth",ipa:"/maʊθ/",vn:"cái miệng",ex:'Open your <em>mouth</em>.',t:"n",topic:"body"},
+  {id:508,w:"move",ipa:"/muːv/",vn:"di chuyển; chuyển nhà",ex:'<em>Move</em> your chair closer.',t:"v",topic:"general"},
+  {id:509,w:"movie",ipa:"/ˈmuːvi/",vn:"bộ phim",ex:'Let\'s watch a <em>movie</em> tonight.',t:"n",topic:"hobby"},
+  {id:510,w:"much",ipa:"/mʌtʃ/",vn:"nhiều",ex:'How <em>much</em> does it cost?',t:"det/adv",topic:"general"},
+  {id:511,w:"museum",ipa:"/mjuːˈziəm/",vn:"bảo tàng",ex:'We visited the art <em>museum</em>.',t:"n",topic:"place"},
+  {id:512,w:"music",ipa:"/ˈmjuːzɪk/",vn:"âm nhạc",ex:'She loves listening to <em>music</em>.',t:"n",topic:"hobby"},
+  {id:513,w:"must",ipa:"/mʌst/",vn:"phải, cần phải",ex:'You <em>must</em> wear a seatbelt.',t:"v",topic:"general"},
+  {id:514,w:"name",ipa:"/neɪm/",vn:"tên",ex:'What is your <em>name</em>?',t:"n",topic:"general"},
+  {id:515,w:"never",ipa:"/ˈnevər/",vn:"không bao giờ",ex:'I <em>never</em> eat fast food.',t:"adv",topic:"general"},
+  {id:516,w:"next",ipa:"/nekst/",vn:"tiếp theo, kế bên",ex:'Who is <em>next</em>?',t:"adj/adv",topic:"general"},
+  {id:517,w:"nice",ipa:"/naɪs/",vn:"tốt, đẹp, dễ chịu",ex:'She is a very <em>nice</em> person.',t:"adj",topic:"general"},
+  {id:518,w:"night",ipa:"/naɪt/",vn:"đêm, ban đêm",ex:'Good <em>night</em>!',t:"n",topic:"time"},
+  {id:519,w:"nine",ipa:"/naɪn/",vn:"chín",ex:'She has <em>nine</em> goldfish.',t:"num",topic:"general"},
+  {id:520,w:"nineteen",ipa:"/ˌnaɪnˈtiːn/",vn:"mười chín",ex:'He is <em>nineteen</em> years old.',t:"num",topic:"general"},
+  {id:521,w:"ninety",ipa:"/ˈnaɪnti/",vn:"chín mươi",ex:'She scored <em>ninety</em> on the test.',t:"num",topic:"general"},
+  {id:522,w:"ninth",ipa:"/naɪnθ/",vn:"thứ chín",ex:'September is the <em>ninth</em> month.',t:"ord",topic:"general"},
+  {id:523,w:"nobody",ipa:"/ˈnəʊbɒdi/",vn:"không ai",ex:'<em>Nobody</em> was home.',t:"pron",topic:"general"},
+  {id:524,w:"nod",ipa:"/nɒd/",vn:"gật đầu",ex:'She <em>nodded</em> in agreement.',t:"v",topic:"general"},
+  {id:525,w:"noise",ipa:"/nɔɪz/",vn:"tiếng ồn",ex:'Please reduce the <em>noise</em>.',t:"n",topic:"general"},
+  {id:526,w:"noodle",ipa:"/ˈnuːdl/",vn:"mì, bún",ex:'She loves eating <em>noodles</em>.',t:"n",topic:"food"},
+  {id:527,w:"noon",ipa:"/nuːn/",vn:"buổi trưa, 12 giờ trưa",ex:'We eat lunch at <em>noon</em>.',t:"n",topic:"time"},
+  {id:528,w:"north",ipa:"/nɔːrθ/",vn:"phía bắc",ex:'Hanoi is in the <em>north</em>.',t:"n/adj",topic:"general"},
+  {id:529,w:"nose",ipa:"/nəʊz/",vn:"cái mũi",ex:'Her <em>nose</em> is small.',t:"n",topic:"body"},
+  {id:530,w:"notebook",ipa:"/ˈnəʊtbʊk/",vn:"vở, sổ tay",ex:'Write it in your <em>notebook</em>.',t:"n",topic:"school"},
+  {id:531,w:"nothing",ipa:"/ˈnʌθɪŋ/",vn:"không có gì",ex:'There is <em>nothing</em> to eat.',t:"pron",topic:"general"},
+  {id:532,w:"notice",ipa:"/ˈnəʊtɪs/",vn:"để ý, nhận thấy; thông báo",ex:'Did you <em>notice</em> anything strange?',t:"v/n",topic:"general"},
+  {id:533,w:"November",ipa:"/nəʊˈvembər/",vn:"tháng Mười một",ex:'It gets cold in <em>November</em>.',t:"n",topic:"time"},
+  {id:534,w:"number",ipa:"/ˈnʌmbər/",vn:"con số; số lượng",ex:'What is your phone <em>number</em>?',t:"n",topic:"general"},
+  {id:535,w:"nurse",ipa:"/nɜːrs/",vn:"y tá",ex:'The <em>nurse</em> checks your temperature.',t:"n",topic:"health"},
+  {id:536,w:"o'clock",ipa:"/əˈklɒk/",vn:"...giờ đúng",ex:'It is three <em>o\'clock</em>.',t:"adv",topic:"time"},
+  {id:537,w:"October",ipa:"/ɒkˈtəʊbər/",vn:"tháng Mười",ex:'Halloween is in <em>October</em>.',t:"n",topic:"time"},
+  {id:538,w:"often",ipa:"/ˈɒfn/",vn:"thường xuyên",ex:'She <em>often</em> reads at night.',t:"adv",topic:"general"},
+  {id:539,w:"old",ipa:"/əʊld/",vn:"già; cũ",ex:'He is an <em>old</em> man.',t:"adj",topic:"general"},
+  {id:540,w:"once",ipa:"/wʌns/",vn:"một lần; ngày xưa",ex:'<em>Once</em> a week is enough.',t:"adv",topic:"time"},
+  {id:541,w:"one",ipa:"/wʌn/",vn:"một",ex:'I have <em>one</em> brother.',t:"num",topic:"general"},
+  {id:542,w:"only",ipa:"/ˈəʊnli/",vn:"chỉ, duy nhất",ex:'She is the <em>only</em> child.',t:"adv/adj",topic:"general"},
+  {id:543,w:"open",ipa:"/ˈəʊpən/",vn:"mở; mở cửa",ex:'<em>Open</em> the window please.',t:"v/adj",topic:"general"},
+  {id:544,w:"or",ipa:"/ɔːr/",vn:"hoặc, hay",ex:'Tea <em>or</em> coffee?',t:"conj",topic:"general"},
+  {id:545,w:"orange",ipa:"/ˈɒrɪndʒ/",vn:"màu cam; quả cam",ex:'She likes <em>orange</em> juice.',t:"n/adj",topic:"food"},
+  {id:546,w:"order",ipa:"/ˈɔːrdər/",vn:"đặt hàng; thứ tự",ex:'Can I <em>order</em> now?',t:"v/n",topic:"food"},
+  {id:547,w:"other",ipa:"/ˈʌðər/",vn:"khác, khác nữa",ex:'Do you have any <em>other</em> options?',t:"det",topic:"general"},
+  {id:548,w:"out",ipa:"/aʊt/",vn:"ra ngoài",ex:'Go <em>out</em> and play.',t:"adv",topic:"general"},
+  {id:549,w:"outside",ipa:"/ˌaʊtˈsaɪd/",vn:"bên ngoài",ex:'It is sunny <em>outside</em>.',t:"adv/prep",topic:"general"},
+  {id:550,w:"over",ipa:"/ˈəʊvər/",vn:"trên; qua; kết thúc",ex:'The exam is <em>over</em>.',t:"prep/adj",topic:"general"},
+  {id:551,w:"own",ipa:"/əʊn/",vn:"sở hữu; của chính mình",ex:'She has her <em>own</em> room.',t:"v/adj",topic:"general"},
+  {id:552,w:"pack",ipa:"/pæk/",vn:"đóng gói",ex:'<em>Pack</em> your bag tonight.',t:"v",topic:"travel"},
+  {id:553,w:"package",ipa:"/ˈpækɪdʒ/",vn:"gói hàng, bưu kiện",ex:'A <em>package</em> arrived for you.',t:"n",topic:"general"},
+  {id:554,w:"page",ipa:"/peɪdʒ/",vn:"trang sách",ex:'Open your book to <em>page</em> ten.',t:"n",topic:"school"},
+  {id:555,w:"paint",ipa:"/peɪnt/",vn:"sơn; vẽ màu",ex:'She likes to <em>paint</em> flowers.',t:"v/n",topic:"hobby"},
+  {id:556,w:"pair",ipa:"/peər/",vn:"một đôi, một cặp",ex:'She bought a <em>pair</em> of shoes.',t:"n",topic:"general"},
+  {id:557,w:"pants",ipa:"/pænts/",vn:"quần dài",ex:'He wears black <em>pants</em>.',t:"n",topic:"general"},
+  {id:558,w:"paper",ipa:"/ˈpeɪpər/",vn:"giấy; tờ báo",ex:'Write on the <em>paper</em>.',t:"n",topic:"school"},
+  {id:559,w:"parent",ipa:"/ˈpeərənt/",vn:"bố mẹ, cha mẹ",ex:'Her <em>parents</em> are doctors.',t:"n",topic:"family"},
+  {id:560,w:"park",ipa:"/pɑːrk/",vn:"công viên; đỗ xe",ex:'We walk in the <em>park</em>.',t:"n/v",topic:"place"},
+  {id:561,w:"part",ipa:"/pɑːrt/",vn:"phần, bộ phận",ex:'This is the best <em>part</em>.',t:"n",topic:"general"},
+  {id:562,w:"party",ipa:"/ˈpɑːrti/",vn:"bữa tiệc",ex:'She had a birthday <em>party</em>.',t:"n",topic:"social"},
+  {id:563,w:"pass",ipa:"/pɑːs/",vn:"qua; đậu (thi)",ex:'Did you <em>pass</em> the exam?',t:"v",topic:"school"},
+  {id:564,w:"past",ipa:"/pɑːst/",vn:"quá khứ; qua, đã qua",ex:'In the <em>past</em>, life was simpler.',t:"n/prep",topic:"time"},
+  {id:565,w:"pay",ipa:"/peɪ/",vn:"trả tiền",ex:'I need to <em>pay</em> the bill.',t:"v",topic:"business"},
+  {id:566,w:"pencil",ipa:"/ˈpensl/",vn:"bút chì",ex:'Write with a <em>pencil</em>.',t:"n",topic:"school"},
+  {id:567,w:"people",ipa:"/ˈpiːpl/",vn:"người, mọi người",ex:'Many <em>people</em> live here.',t:"n",topic:"social"},
+  {id:568,w:"perhaps",ipa:"/pərˈhæps/",vn:"có lẽ, có thể",ex:'<em>Perhaps</em> she is at home.',t:"adv",topic:"general"},
+  {id:569,w:"person",ipa:"/ˈpɜːrsn/",vn:"người, cá nhân",ex:'She is a kind <em>person</em>.',t:"n",topic:"general"},
+  {id:570,w:"pet",ipa:"/pet/",vn:"thú cưng",ex:'Do you have a <em>pet</em>?',t:"n",topic:"nature"},
+  {id:571,w:"piano",ipa:"/piˈænəʊ/",vn:"đàn piano",ex:'She plays the <em>piano</em> beautifully.',t:"n",topic:"hobby"},
+  {id:572,w:"pick",ipa:"/pɪk/",vn:"hái; chọn",ex:'<em>Pick</em> any color you like.',t:"v",topic:"general"},
+  {id:573,w:"picnic",ipa:"/ˈpɪknɪk/",vn:"đi dã ngoại",ex:'We had a <em>picnic</em> in the park.',t:"n",topic:"hobby"},
+  {id:574,w:"picture",ipa:"/ˈpɪktʃər/",vn:"bức tranh; ảnh",ex:'Draw a <em>picture</em> of your house.',t:"n",topic:"general"},
+  {id:575,w:"pie",ipa:"/paɪ/",vn:"bánh nướng nhân",ex:'She baked an apple <em>pie</em>.',t:"n",topic:"food"},
+  {id:576,w:"piece",ipa:"/piːs/",vn:"mảnh, miếng",ex:'Give me a <em>piece</em> of cake.',t:"n",topic:"general"},
+  {id:577,w:"pig",ipa:"/pɪɡ/",vn:"con lợn",ex:'A <em>pig</em> lives on the farm.',t:"n",topic:"nature"},
+  {id:578,w:"pink",ipa:"/pɪŋk/",vn:"màu hồng",ex:'She loves <em>pink</em> flowers.',t:"adj",topic:"general"},
+  {id:579,w:"pizza",ipa:"/ˈpiːtsə/",vn:"bánh pizza",ex:'We ordered a large <em>pizza</em>.',t:"n",topic:"food"},
+  {id:580,w:"place",ipa:"/pleɪs/",vn:"địa điểm, nơi chốn",ex:'This is a good <em>place</em> to study.',t:"n",topic:"place"},
+  {id:581,w:"plan",ipa:"/plæn/",vn:"kế hoạch; lên kế hoạch",ex:'What is your <em>plan</em> for today?',t:"n/v",topic:"general"},
+  {id:582,w:"playground",ipa:"/ˈpleɪɡraʊnd/",vn:"sân chơi",ex:'Children play at the <em>playground</em>.',t:"n",topic:"school"},
+  {id:583,w:"point",ipa:"/pɔɪnt/",vn:"điểm; chỉ vào",ex:'<em>Point</em> to the correct answer.',t:"v/n",topic:"school"},
+  {id:584,w:"polite",ipa:"/pəˈlaɪt/",vn:"lịch sự",ex:'Always be <em>polite</em>.',t:"adj",topic:"social"},
+  {id:585,w:"poor",ipa:"/pɔːr/",vn:"nghèo; tội nghiệp",ex:'He helps <em>poor</em> people.',t:"adj",topic:"social"},
+  {id:586,w:"popcorn",ipa:"/ˈpɒpkɔːrn/",vn:"bỏng ngô",ex:'We eat <em>popcorn</em> at movies.',t:"n",topic:"food"},
+  {id:587,w:"popular",ipa:"/ˈpɒpjələr/",vn:"phổ biến, nổi tiếng",ex:'This song is very <em>popular</em>.',t:"adj",topic:"general"},
+  {id:588,w:"pork",ipa:"/pɔːrk/",vn:"thịt lợn",ex:'She cooked <em>pork</em> for dinner.',t:"n",topic:"food"},
+  {id:589,w:"possible",ipa:"/ˈpɒsəbl/",vn:"có thể, khả thi",ex:'Anything is <em>possible</em>.',t:"adj",topic:"general"},
+  {id:590,w:"pound",ipa:"/paʊnd/",vn:"cân Anh (lb); đồng bảng",ex:'She weighs 120 <em>pounds</em>.',t:"n",topic:"general"},
+  {id:591,w:"practice",ipa:"/ˈpræktɪs/",vn:"luyện tập; thực hành",ex:'<em>Practice</em> makes perfect.',t:"v/n",topic:"school"},
+  {id:592,w:"prepare",ipa:"/prɪˈpeər/",vn:"chuẩn bị",ex:'She is <em>preparing</em> dinner.',t:"v",topic:"general"},
+  {id:593,w:"present",ipa:"/ˈpreznt/",vn:"quà tặng; hiện tại",ex:'He gave her a <em>present</em>.',t:"n/adj",topic:"general"},
+  {id:594,w:"pretty",ipa:"/ˈprɪti/",vn:"đẹp, xinh; khá",ex:'She looks very <em>pretty</em>.',t:"adj/adv",topic:"general"},
+  {id:595,w:"price",ipa:"/praɪs/",vn:"giá cả",ex:'What is the <em>price</em>?',t:"n",topic:"business"},
+  {id:596,w:"problem",ipa:"/ˈprɒbləm/",vn:"vấn đề, bài toán",ex:'We solved the <em>problem</em> together.',t:"n",topic:"general"},
+  {id:597,w:"program",ipa:"/ˈprəʊɡræm/",vn:"chương trình",ex:'She watches a cooking <em>program</em>.',t:"n",topic:"general"},
+  {id:598,w:"proud",ipa:"/praʊd/",vn:"tự hào",ex:'I am <em>proud</em> of you.',t:"adj",topic:"feeling"},
+  {id:599,w:"public",ipa:"/ˈpʌblɪk/",vn:"công cộng; công chúng",ex:'This is a <em>public</em> park.',t:"adj/n",topic:"social"},
+  {id:600,w:"pull",ipa:"/pʊl/",vn:"kéo",ex:'<em>Pull</em> the door open.',t:"v",topic:"general"},
+  {id:601,w:"purple",ipa:"/ˈpɜːrpl/",vn:"màu tím",ex:'She paints her room <em>purple</em>.',t:"adj",topic:"general"},
+  {id:602,w:"push",ipa:"/pʊʃ/",vn:"đẩy",ex:'<em>Push</em> the door to open it.',t:"v",topic:"general"},
+  {id:603,w:"put",ipa:"/pʊt/",vn:"đặt, để",ex:'<em>Put</em> the book on the shelf.',t:"v",topic:"general"},
+  {id:604,w:"queen",ipa:"/kwiːn/",vn:"nữ hoàng",ex:'She is the <em>queen</em> of the country.',t:"n",topic:"general"},
+  {id:605,w:"question",ipa:"/ˈkwestʃən/",vn:"câu hỏi; đặt câu hỏi",ex:'Raise your hand to ask a <em>question</em>.',t:"n/v",topic:"school"},
+  {id:606,w:"quick",ipa:"/kwɪk/",vn:"nhanh, mau",ex:'Be <em>quick</em> or we\'ll miss the bus.',t:"adj",topic:"general"},
+  {id:607,w:"quiet",ipa:"/ˈkwaɪət/",vn:"yên lặng, im lìm",ex:'Please be <em>quiet</em> in the library.',t:"adj",topic:"general"},
+  {id:608,w:"quite",ipa:"/kwaɪt/",vn:"khá, tương đối",ex:'She is <em>quite</em> smart.',t:"adv",topic:"general"},
+  {id:609,w:"rabbit",ipa:"/ˈræbɪt/",vn:"con thỏ",ex:'She has a pet <em>rabbit</em>.',t:"n",topic:"nature"},
+  {id:610,w:"radio",ipa:"/ˈreɪdiəʊ/",vn:"đài phát thanh",ex:'He listens to the <em>radio</em>.',t:"n",topic:"general"},
+  {id:611,w:"railway",ipa:"/ˈreɪlweɪ/",vn:"đường sắt",ex:'The <em>railway</em> connects the two cities.',t:"n",topic:"travel"},
+  {id:612,w:"rain",ipa:"/reɪn/",vn:"mưa",ex:'It will <em>rain</em> this afternoon.',t:"v/n",topic:"nature"},
+  {id:613,w:"rainbow",ipa:"/ˈreɪnbəʊ/",vn:"cầu vồng",ex:'A <em>rainbow</em> appeared after the rain.',t:"n",topic:"nature"},
+  {id:614,w:"rainy",ipa:"/ˈreɪni/",vn:"mưa nhiều",ex:'It is a <em>rainy</em> day.',t:"adj",topic:"nature"},
+  {id:615,w:"read",ipa:"/riːd/",vn:"đọc",ex:'She loves to <em>read</em> books.',t:"v",topic:"school"},
+  {id:616,w:"ready",ipa:"/ˈredi/",vn:"sẵn sàng",ex:'Are you <em>ready</em> to go?',t:"adj",topic:"general"},
+  {id:617,w:"refrigerator",ipa:"/rɪˈfrɪdʒəreɪtər/",vn:"tủ lạnh",ex:'Keep food in the <em>refrigerator</em>.',t:"n",topic:"home"},
+  {id:618,w:"repeat",ipa:"/rɪˈpiːt/",vn:"lặp lại, nhắc lại",ex:'Please <em>repeat</em> that word.',t:"v",topic:"school"},
+  {id:619,w:"restaurant",ipa:"/ˈrestrɒnt/",vn:"nhà hàng",ex:'We ate at a nice <em>restaurant</em>.',t:"n",topic:"food"},
+  {id:620,w:"restroom",ipa:"/ˈrestruːm/",vn:"nhà vệ sinh",ex:'Where is the <em>restroom</em>?',t:"n",topic:"place"},
+  {id:621,w:"rice",ipa:"/raɪs/",vn:"cơm, lúa gạo",ex:'She eats <em>rice</em> every day.',t:"n",topic:"food"},
+  {id:622,w:"rich",ipa:"/rɪtʃ/",vn:"giàu có",ex:'He is a very <em>rich</em> man.',t:"adj",topic:"business"},
+  {id:623,w:"ride",ipa:"/raɪd/",vn:"cưỡi, đi (xe)",ex:'She can <em>ride</em> a horse.',t:"v",topic:"travel"},
+  {id:624,w:"right",ipa:"/raɪt/",vn:"đúng; bên phải",ex:'Turn <em>right</em> at the sign.',t:"adj/adv/n",topic:"general"},
+  {id:625,w:"ring",ipa:"/rɪŋ/",vn:"nhẫn; chuông reo",ex:'The phone is <em>ringing</em>.',t:"n/v",topic:"general"},
+  {id:626,w:"river",ipa:"/ˈrɪvər/",vn:"dòng sông",ex:'They swim in the <em>river</em>.',t:"n",topic:"nature"},
+  {id:627,w:"road",ipa:"/rəʊd/",vn:"con đường",ex:'Cross the <em>road</em> safely.',t:"n",topic:"travel"},
+  {id:628,w:"room",ipa:"/ruːm/",vn:"căn phòng; chỗ",ex:'My <em>room</em> is small.',t:"n",topic:"home"},
+  {id:629,w:"rose",ipa:"/rəʊz/",vn:"hoa hồng",ex:'She gave him a red <em>rose</em>.',t:"n",topic:"nature"},
+  {id:630,w:"round",ipa:"/raʊnd/",vn:"tròn; vòng",ex:'The earth is <em>round</em>.',t:"adj",topic:"general"},
+  {id:631,w:"rule",ipa:"/ruːl/",vn:"quy tắc, luật lệ",ex:'Follow the <em>rules</em>.',t:"n",topic:"school"},
+  {id:632,w:"ruler",ipa:"/ˈruːlər/",vn:"cây thước; người cai trị",ex:'Use a <em>ruler</em> to draw a straight line.',t:"n",topic:"school"},
+  {id:633,w:"sad",ipa:"/sæd/",vn:"buồn",ex:'She felt <em>sad</em> after the news.',t:"adj",topic:"feeling"},
+  {id:634,w:"safe",ipa:"/seɪf/",vn:"an toàn",ex:'Keep your passwords <em>safe</em>.',t:"adj",topic:"general"},
+  {id:635,w:"salad",ipa:"/ˈsæləd/",vn:"món salad",ex:'I eat a <em>salad</em> for lunch.',t:"n",topic:"food"},
+  {id:636,w:"sale",ipa:"/seɪl/",vn:"đợt giảm giá; việc bán",ex:'Everything is on <em>sale</em>.',t:"n",topic:"business"},
+  {id:637,w:"salt",ipa:"/sɔːlt/",vn:"muối",ex:'Add some <em>salt</em> to the soup.',t:"n",topic:"food"},
+  {id:638,w:"same",ipa:"/seɪm/",vn:"giống nhau, cùng",ex:'We have the <em>same</em> opinion.',t:"adj",topic:"general"},
+  {id:639,w:"sandwich",ipa:"/ˈsænwɪdʒ/",vn:"bánh mì kẹp",ex:'She made a cheese <em>sandwich</em>.',t:"n",topic:"food"},
+  {id:640,w:"Saturday",ipa:"/ˈsætərdeɪ/",vn:"thứ Bảy",ex:'We sleep late on <em>Saturday</em>.',t:"n",topic:"time"},
+  {id:641,w:"second",ipa:"/ˈsekənd/",vn:"giây; thứ hai",ex:'Wait just a <em>second</em>.',t:"n/ord",topic:"time"},
+  {id:642,w:"seldom",ipa:"/ˈseldəm/",vn:"hiếm khi",ex:'He <em>seldom</em> eats fast food.',t:"adv",topic:"general"},
+  {id:643,w:"send",ipa:"/send/",vn:"gửi",ex:'Please <em>send</em> me a message.',t:"v",topic:"general"},
+  {id:644,w:"senior high school",ipa:"/ˌsiːniər haɪ skuːl/",vn:"trường trung học phổ thông",ex:'She goes to <em>senior high school</em>.',t:"n",topic:"school"},
+  {id:645,w:"sentence",ipa:"/ˈsentəns/",vn:"câu (ngữ pháp)",ex:'Write a <em>sentence</em> using this word.',t:"n",topic:"school"},
+  {id:646,w:"September",ipa:"/sepˈtembər/",vn:"tháng Chín",ex:'School starts in <em>September</em>.',t:"n",topic:"time"},
+  {id:647,w:"serious",ipa:"/ˈsɪəriəs/",vn:"nghiêm túc; nghiêm trọng",ex:'This is a <em>serious</em> problem.',t:"adj",topic:"general"},
+  {id:648,w:"seventh",ipa:"/ˈsevnθ/",vn:"thứ bảy",ex:'July is the <em>seventh</em> month.',t:"ord",topic:"general"},
+  {id:649,w:"seventy",ipa:"/ˈsevnti/",vn:"bảy mươi",ex:'He is <em>seventy</em> years old.',t:"num",topic:"general"},
+  {id:650,w:"several",ipa:"/ˈsevrəl/",vn:"một số, vài",ex:'She called me <em>several</em> times.',t:"det",topic:"general"},
+  {id:651,w:"shall",ipa:"/ʃæl/",vn:"sẽ (thể hiện đề nghị)",ex:'<em>Shall</em> we dance?',t:"v",topic:"general"},
+  {id:652,w:"shape",ipa:"/ʃeɪp/",vn:"hình dạng; cơ thể",ex:'Draw a circle <em>shape</em>.',t:"n",topic:"school"},
+  {id:653,w:"share",ipa:"/ʃeər/",vn:"chia sẻ",ex:'<em>Share</em> your food with others.',t:"v",topic:"social"},
+  {id:654,w:"she",ipa:"/ʃiː/",vn:"cô ấy, bà ấy",ex:'<em>She</em> is a great teacher.',t:"pron",topic:"general"},
+  {id:655,w:"sheep",ipa:"/ʃiːp/",vn:"con cừu",ex:'A <em>sheep</em> has white wool.',t:"n",topic:"nature"},
+  {id:656,w:"ship",ipa:"/ʃɪp/",vn:"con tàu",ex:'A big <em>ship</em> arrived at the port.',t:"n",topic:"travel"},
+  {id:657,w:"shirt",ipa:"/ʃɜːrt/",vn:"áo sơ mi",ex:'He wears a white <em>shirt</em>.',t:"n",topic:"general"},
+  {id:658,w:"shoe",ipa:"/ʃuː/",vn:"giày",ex:'She bought new <em>shoes</em>.',t:"n",topic:"general"},
+  {id:659,w:"shop",ipa:"/ʃɒp/",vn:"cửa hàng; mua sắm",ex:'We <em>shop</em> every weekend.',t:"n/v",topic:"place"},
+  {id:660,w:"shopkeeper",ipa:"/ˈʃɒpkiːpər/",vn:"chủ cửa hàng",ex:'The <em>shopkeeper</em> was very helpful.',t:"n",topic:"work"},
+  {id:661,w:"short",ipa:"/ʃɔːrt/",vn:"ngắn; lùn",ex:'She has <em>short</em> hair.',t:"adj",topic:"general"},
+  {id:662,w:"should",ipa:"/ʃʊd/",vn:"nên, cần",ex:'You <em>should</em> drink more water.',t:"v",topic:"general"},
+  {id:663,w:"show",ipa:"/ʃəʊ/",vn:"chương trình; cho thấy",ex:'<em>Show</em> me your homework.',t:"v/n",topic:"general"},
+  {id:664,w:"shy",ipa:"/ʃaɪ/",vn:"nhút nhát, rụt rè",ex:'She is very <em>shy</em> around strangers.',t:"adj",topic:"general"},
+  {id:665,w:"sick",ipa:"/sɪk/",vn:"ốm, bệnh",ex:'He stayed home because he was <em>sick</em>.',t:"adj",topic:"health"},
+  {id:666,w:"side",ipa:"/saɪd/",vn:"cạnh, bên, phía",ex:'Stand by my <em>side</em>.',t:"n",topic:"general"},
+  {id:667,w:"sidewalk",ipa:"/ˈsaɪdwɔːk/",vn:"vỉa hè",ex:'Walk on the <em>sidewalk</em>.',t:"n",topic:"place"},
+  {id:668,w:"simple",ipa:"/ˈsɪmpl/",vn:"đơn giản",ex:'The answer is very <em>simple</em>.',t:"adj",topic:"general"},
+  {id:669,w:"since",ipa:"/sɪns/",vn:"từ khi, kể từ",ex:'She has lived here <em>since</em> 2010.',t:"prep/conj",topic:"time"},
+  {id:670,w:"sing",ipa:"/sɪŋ/",vn:"hát",ex:'She loves to <em>sing</em>.',t:"v",topic:"hobby"},
+  {id:671,w:"singer",ipa:"/ˈsɪŋər/",vn:"ca sĩ",ex:'She is a famous <em>singer</em>.',t:"n",topic:"work"},
+  {id:672,w:"sir",ipa:"/sɜːr/",vn:"thưa ông, thưa ngài",ex:'Yes, <em>sir</em>!',t:"n",topic:"social"},
+  {id:673,w:"sister",ipa:"/ˈsɪstər/",vn:"chị, em gái",ex:'My <em>sister</em> is twelve.',t:"n",topic:"family"},
+  {id:674,w:"sit",ipa:"/sɪt/",vn:"ngồi",ex:'Please <em>sit</em> down.',t:"v",topic:"general"},
+  {id:675,w:"six",ipa:"/sɪks/",vn:"sáu",ex:'She has <em>six</em> apples.',t:"num",topic:"general"},
+  {id:676,w:"sixteen",ipa:"/ˌsɪkˈstiːn/",vn:"mười sáu",ex:'She is <em>sixteen</em> years old.',t:"num",topic:"general"},
+  {id:677,w:"sixth",ipa:"/sɪksθ/",vn:"thứ sáu",ex:'June is the <em>sixth</em> month.',t:"ord",topic:"general"},
+  {id:678,w:"sixty",ipa:"/ˈsɪksti/",vn:"sáu mươi",ex:'He retired at <em>sixty</em>.',t:"num",topic:"general"},
+  {id:679,w:"size",ipa:"/saɪz/",vn:"kích thước, cỡ",ex:'What <em>size</em> shoes do you wear?',t:"n",topic:"general"},
+  {id:680,w:"skirt",ipa:"/skɜːrt/",vn:"váy",ex:'She wears a blue <em>skirt</em>.',t:"n",topic:"general"},
+  {id:681,w:"sky",ipa:"/skaɪ/",vn:"bầu trời",ex:'The <em>sky</em> is blue.',t:"n",topic:"nature"},
+  {id:682,w:"sleep",ipa:"/sliːp/",vn:"ngủ",ex:'She needs to <em>sleep</em> early.',t:"v",topic:"health"},
+  {id:683,w:"slow",ipa:"/sləʊ/",vn:"chậm",ex:'The turtle is very <em>slow</em>.',t:"adj",topic:"general"},
+  {id:684,w:"small",ipa:"/smɔːl/",vn:"nhỏ, bé",ex:'She has a <em>small</em> dog.',t:"adj",topic:"general"},
+  {id:685,w:"smart",ipa:"/smɑːrt/",vn:"thông minh",ex:'She is very <em>smart</em>.',t:"adj",topic:"general"},
+  {id:686,w:"smell",ipa:"/smel/",vn:"ngửi; mùi",ex:'The flowers <em>smell</em> wonderful.',t:"v/n",topic:"general"},
+  {id:687,w:"smile",ipa:"/smaɪl/",vn:"nụ cười; mỉm cười",ex:'She has a beautiful <em>smile</em>.',t:"n/v",topic:"feeling"},
+  {id:688,w:"smoke",ipa:"/sməʊk/",vn:"khói; hút thuốc",ex:'Don\'t <em>smoke</em> inside.',t:"n/v",topic:"health"},
+  {id:689,w:"snack",ipa:"/snæk/",vn:"đồ ăn nhẹ",ex:'She eats a <em>snack</em> in the afternoon.',t:"n",topic:"food"},
+  {id:690,w:"snake",ipa:"/sneɪk/",vn:"con rắn",ex:'A <em>snake</em> is in the garden.',t:"n",topic:"nature"},
+  {id:691,w:"snow",ipa:"/snəʊ/",vn:"tuyết; tuyết rơi",ex:'It <em>snows</em> in winter.',t:"n/v",topic:"nature"},
+  {id:692,w:"so",ipa:"/səʊ/",vn:"vậy nên; rất",ex:'She was tired, <em>so</em> she slept.',t:"conj/adv",topic:"general"},
+  {id:693,w:"socks",ipa:"/sɒks/",vn:"tất, vớ",ex:'Put on your <em>socks</em>.',t:"n",topic:"general"},
+  {id:694,w:"sofa",ipa:"/ˈsəʊfə/",vn:"ghế sofa",ex:'She sits on the <em>sofa</em>.',t:"n",topic:"home"},
+  {id:695,w:"some",ipa:"/sʌm/",vn:"một số, một ít",ex:'Can I have <em>some</em> water?',t:"det",topic:"general"},
+  {id:696,w:"someone",ipa:"/ˈsʌmwʌn/",vn:"ai đó",ex:'<em>Someone</em> is at the door.',t:"pron",topic:"general"},
+  {id:697,w:"something",ipa:"/ˈsʌmθɪŋ/",vn:"điều gì đó",ex:'I have <em>something</em> to tell you.',t:"pron",topic:"general"},
+  {id:698,w:"sometimes",ipa:"/ˈsʌmtaɪmz/",vn:"đôi khi",ex:'<em>Sometimes</em> she walks to school.',t:"adv",topic:"time"},
+  {id:699,w:"somewhere",ipa:"/ˈsʌmweər/",vn:"ở đâu đó",ex:'She is <em>somewhere</em> in the park.',t:"adv",topic:"place"},
+  {id:700,w:"son",ipa:"/sʌn/",vn:"con trai",ex:'His <em>son</em> is five years old.',t:"n",topic:"family"},
+  {id:701,w:"song",ipa:"/sɒŋ/",vn:"bài hát",ex:'She sang a beautiful <em>song</em>.',t:"n",topic:"hobby"},
+  {id:702,w:"soon",ipa:"/suːn/",vn:"sớm, trong thời gian ngắn",ex:'I\'ll be there <em>soon</em>.',t:"adv",topic:"time"},
+  {id:703,w:"sorry",ipa:"/ˈsɒri/",vn:"xin lỗi",ex:'I\'m <em>sorry</em> for being late.',t:"adj",topic:"general"},
+  {id:704,w:"sound",ipa:"/saʊnd/",vn:"âm thanh; nghe có vẻ",ex:'That <em>sounds</em> great!',t:"n/v",topic:"general"},
+  {id:705,w:"soup",ipa:"/suːp/",vn:"canh, súp",ex:'She made vegetable <em>soup</em>.',t:"n",topic:"food"},
+  {id:706,w:"south",ipa:"/saʊθ/",vn:"phía nam",ex:'Ho Chi Minh City is in the <em>south</em>.',t:"n/adj",topic:"general"},
+  {id:707,w:"space",ipa:"/speɪs/",vn:"không gian; khoảng trống",ex:'Astronauts travel in <em>space</em>.',t:"n",topic:"nature"},
+  {id:708,w:"speak",ipa:"/spiːk/",vn:"nói chuyện",ex:'Can you <em>speak</em> English?',t:"v",topic:"general"},
+  {id:709,w:"special",ipa:"/ˈspeʃl/",vn:"đặc biệt",ex:'Today is a <em>special</em> day.',t:"adj",topic:"general"},
+  {id:710,w:"spell",ipa:"/spel/",vn:"đánh vần",ex:'Can you <em>spell</em> your name?',t:"v",topic:"school"},
+  {id:711,w:"spend",ipa:"/spend/",vn:"tiêu (tiền); dành (thời gian)",ex:'She <em>spends</em> time with family.',t:"v",topic:"general"},
+  {id:712,w:"spoon",ipa:"/spuːn/",vn:"cái muỗng",ex:'Use a <em>spoon</em> to eat soup.',t:"n",topic:"food"},
+  {id:713,w:"sports",ipa:"/spɔːrts/",vn:"thể thao",ex:'She loves <em>sports</em>.',t:"n",topic:"sports"},
+  {id:714,w:"spring",ipa:"/sprɪŋ/",vn:"mùa xuân",ex:'Flowers bloom in <em>spring</em>.',t:"n",topic:"nature"},
+  {id:715,w:"square",ipa:"/skweər/",vn:"hình vuông; quảng trường",ex:'A <em>square</em> has four equal sides.',t:"n",topic:"school"},
+  {id:716,w:"stand",ipa:"/stænd/",vn:"đứng",ex:'Please <em>stand</em> up.',t:"v",topic:"general"},
+  {id:717,w:"star",ipa:"/stɑːr/",vn:"ngôi sao",ex:'The <em>stars</em> shine at night.',t:"n",topic:"nature"},
+  {id:718,w:"start",ipa:"/stɑːrt/",vn:"bắt đầu",ex:'<em>Start</em> the engine.',t:"v/n",topic:"general"},
+  {id:719,w:"station",ipa:"/ˈsteɪʃn/",vn:"trạm, ga",ex:'Meet me at the train <em>station</em>.',t:"n",topic:"travel"},
+  {id:720,w:"stay",ipa:"/steɪ/",vn:"ở lại, lưu trú",ex:'She will <em>stay</em> here tonight.',t:"v",topic:"general"},
+  {id:721,w:"steak",ipa:"/steɪk/",vn:"miếng thịt bít tết",ex:'He ordered a beef <em>steak</em>.',t:"n",topic:"food"},
+  {id:722,w:"still",ipa:"/stɪl/",vn:"vẫn còn; tĩnh lặng",ex:'She <em>still</em> lives here.',t:"adv/adj",topic:"general"},
+  {id:723,w:"stomach",ipa:"/ˈstʌmək/",vn:"dạ dày; bụng",ex:'My <em>stomach</em> hurts.',t:"n",topic:"body"},
+  {id:724,w:"stop",ipa:"/stɒp/",vn:"dừng lại",ex:'<em>Stop</em> talking and listen.',t:"v",topic:"general"},
+  {id:725,w:"store",ipa:"/stɔːr/",vn:"cửa hàng; lưu trữ",ex:'The <em>store</em> closes at 9 pm.',t:"n/v",topic:"place"},
+  {id:726,w:"story",ipa:"/ˈstɔːri/",vn:"câu chuyện; tầng (nhà)",ex:'Tell me a <em>story</em>.',t:"n",topic:"general"},
+  {id:727,w:"strange",ipa:"/streɪndʒ/",vn:"lạ, kỳ lạ",ex:'She heard a <em>strange</em> sound.',t:"adj",topic:"general"},
+  {id:728,w:"stranger",ipa:"/ˈstreɪndʒər/",vn:"người lạ",ex:'Don\'t talk to <em>strangers</em>.',t:"n",topic:"social"},
+  {id:729,w:"street",ipa:"/striːt/",vn:"đường phố",ex:'She lives on this <em>street</em>.',t:"n",topic:"place"},
+  {id:730,w:"strong",ipa:"/strɒŋ/",vn:"mạnh mẽ",ex:'He is very <em>strong</em>.',t:"adj",topic:"general"},
+  {id:731,w:"student",ipa:"/ˈstjuːdnt/",vn:"học sinh, sinh viên",ex:'She is a good <em>student</em>.',t:"n",topic:"school"},
+  {id:732,w:"study",ipa:"/ˈstʌdi/",vn:"học; nghiên cứu",ex:'I <em>study</em> English every day.',t:"v",topic:"school"},
+  {id:733,w:"stupid",ipa:"/ˈstjuːpɪd/",vn:"ngu ngốc",ex:'That was a <em>stupid</em> mistake.',t:"adj",topic:"general"},
+  {id:734,w:"successful",ipa:"/səkˈsesfʊl/",vn:"thành công",ex:'She is a <em>successful</em> businesswoman.',t:"adj",topic:"work"},
+  {id:735,w:"sugar",ipa:"/ˈʃʊɡər/",vn:"đường",ex:'Don\'t add too much <em>sugar</em>.',t:"n",topic:"food"},
+  {id:736,w:"summer",ipa:"/ˈsʌmər/",vn:"mùa hè",ex:'We swim in <em>summer</em>.',t:"n",topic:"nature"},
+  {id:737,w:"sun",ipa:"/sʌn/",vn:"mặt trời",ex:'The <em>sun</em> rises in the east.',t:"n",topic:"nature"},
+  {id:738,w:"Sunday",ipa:"/ˈsʌndeɪ/",vn:"Chủ nhật",ex:'We rest on <em>Sunday</em>.',t:"n",topic:"time"},
+  {id:739,w:"sunny",ipa:"/ˈsʌni/",vn:"nắng, có nắng",ex:'It is a <em>sunny</em> day.',t:"adj",topic:"nature"},
+  {id:740,w:"supermarket",ipa:"/ˈsuːpəmɑːrkɪt/",vn:"siêu thị",ex:'She shops at the <em>supermarket</em>.',t:"n",topic:"place"},
+  {id:741,w:"sure",ipa:"/ʃʊər/",vn:"chắc chắn",ex:'Are you <em>sure</em> about that?',t:"adj/adv",topic:"general"},
+  {id:742,w:"surprise",ipa:"/səˈpraɪz/",vn:"sự bất ngờ; bất ngờ",ex:'It was a big <em>surprise</em>.',t:"n/v",topic:"feeling"},
+  {id:743,w:"surprised",ipa:"/səˈpraɪzd/",vn:"ngạc nhiên",ex:'She was <em>surprised</em> by the gift.',t:"adj",topic:"feeling"},
+  {id:744,w:"sweater",ipa:"/ˈswetər/",vn:"áo len",ex:'She knit a wool <em>sweater</em>.',t:"n",topic:"general"},
+  {id:745,w:"sweet",ipa:"/swiːt/",vn:"ngọt; dễ thương",ex:'This cake is very <em>sweet</em>.',t:"adj",topic:"food"},
+  {id:746,w:"swim",ipa:"/swɪm/",vn:"bơi lội",ex:'She can <em>swim</em> very well.',t:"v",topic:"sports"},
+  {id:747,w:"table",ipa:"/ˈteɪbl/",vn:"cái bàn",ex:'Put the dishes on the <em>table</em>.',t:"n",topic:"home"},
+  {id:748,w:"take",ipa:"/teɪk/",vn:"lấy; mang đi; chụp",ex:'<em>Take</em> an umbrella with you.',t:"v",topic:"general"},
+  {id:749,w:"talk",ipa:"/tɔːk/",vn:"nói chuyện",ex:'They <em>talk</em> for hours.',t:"v",topic:"social"},
+  {id:750,w:"tall",ipa:"/tɔːl/",vn:"cao (người, vật)",ex:'He is very <em>tall</em>.',t:"adj",topic:"general"},
+  {id:751,w:"tape",ipa:"/teɪp/",vn:"băng dính; băng cassette",ex:'Use <em>tape</em> to seal the box.',t:"n",topic:"general"},
+  {id:752,w:"taste",ipa:"/teɪst/",vn:"nếm; vị",ex:'This soup <em>tastes</em> great.',t:"v/n",topic:"food"},
+  {id:753,w:"taxi",ipa:"/ˈtæksi/",vn:"xe taxi",ex:'She took a <em>taxi</em> home.',t:"n",topic:"travel"},
+  {id:754,w:"tea",ipa:"/tiː/",vn:"trà, chè",ex:'She drinks green <em>tea</em> every day.',t:"n",topic:"food"},
+  {id:755,w:"teach",ipa:"/tiːtʃ/",vn:"dạy học",ex:'She <em>teaches</em> English.',t:"v",topic:"work"},
+  {id:756,w:"teacher",ipa:"/ˈtiːtʃər/",vn:"giáo viên",ex:'My <em>teacher</em> is very kind.',t:"n",topic:"work"},
+  {id:757,w:"team",ipa:"/tiːm/",vn:"đội, nhóm",ex:'Our <em>team</em> won the game.',t:"n",topic:"sports"},
+  {id:758,w:"teenager",ipa:"/ˈtiːneɪdʒər/",vn:"thanh thiếu niên",ex:'She is a <em>teenager</em>.',t:"n",topic:"general"},
+  {id:759,w:"telephone",ipa:"/ˈtelɪfəʊn/",vn:"điện thoại",ex:'Answer the <em>telephone</em>.',t:"n",topic:"general"},
+  {id:760,w:"television",ipa:"/ˈtelɪvɪʒn/",vn:"ti vi",ex:'She watches <em>television</em> after dinner.',t:"n",topic:"home"},
+  {id:761,w:"tell",ipa:"/tel/",vn:"kể, nói, cho biết",ex:'Please <em>tell</em> me the story.',t:"v",topic:"general"},
+  {id:762,w:"ten",ipa:"/ten/",vn:"mười",ex:'Count to <em>ten</em>.',t:"num",topic:"general"},
+  {id:763,w:"tennis",ipa:"/ˈtenɪs/",vn:"quần vợt",ex:'She plays <em>tennis</em> on weekends.',t:"n",topic:"sports"},
+  {id:764,w:"tenth",ipa:"/tenθ/",vn:"thứ mười",ex:'October is the <em>tenth</em> month.',t:"ord",topic:"general"},
+  {id:765,w:"test",ipa:"/test/",vn:"bài kiểm tra; kiểm tra",ex:'We have a math <em>test</em> today.',t:"n/v",topic:"school"},
+  {id:766,w:"than",ipa:"/ðæn/",vn:"hơn (so sánh)",ex:'She is taller <em>than</em> me.',t:"conj",topic:"general"},
+  {id:767,w:"thank",ipa:"/θæŋk/",vn:"cảm ơn",ex:'<em>Thank</em> you very much.',t:"v",topic:"general"},
+  {id:768,w:"that",ipa:"/ðæt/",vn:"cái đó, điều đó",ex:'<em>That</em> is my book.',t:"det/pron",topic:"general"},
+  {id:769,w:"the",ipa:"/ðə/",vn:"(mạo từ xác định)",ex:'<em>The</em> sun is bright.',t:"art",topic:"general"},
+  {id:770,w:"theater",ipa:"/ˈθɪətər/",vn:"rạp chiếu phim; nhà hát",ex:'We watched a play at the <em>theater</em>.',t:"n",topic:"place"},
+  {id:771,w:"then",ipa:"/ðen/",vn:"sau đó, rồi",ex:'Eat first, <em>then</em> do homework.',t:"adv",topic:"general"},
+  {id:772,w:"there",ipa:"/ðeər/",vn:"ở đó, đó",ex:'She is standing over <em>there</em>.',t:"adv",topic:"general"},
+  {id:773,w:"these",ipa:"/ðiːz/",vn:"những cái này",ex:'<em>These</em> are my books.',t:"det",topic:"general"},
+  {id:774,w:"they",ipa:"/ðeɪ/",vn:"họ, chúng",ex:'<em>They</em> are good friends.',t:"pron",topic:"general"},
+  {id:775,w:"thin",ipa:"/θɪn/",vn:"mỏng; gầy",ex:'She is very <em>thin</em>.',t:"adj",topic:"general"},
+  {id:776,w:"thing",ipa:"/θɪŋ/",vn:"vật, thứ, điều",ex:'Put your <em>things</em> away.',t:"n",topic:"general"},
+  {id:777,w:"think",ipa:"/θɪŋk/",vn:"nghĩ, suy nghĩ",ex:'I <em>think</em> you\'re right.',t:"v",topic:"general"},
+  {id:778,w:"third",ipa:"/θɜːrd/",vn:"thứ ba",ex:'March is the <em>third</em> month.',t:"ord",topic:"general"},
+  {id:779,w:"thirsty",ipa:"/ˈθɜːrsti/",vn:"khát nước",ex:'I\'m so <em>thirsty</em>.',t:"adj",topic:"general"},
+  {id:780,w:"thirteen",ipa:"/ˌθɜːrˈtiːn/",vn:"mười ba",ex:'She is <em>thirteen</em> years old.',t:"num",topic:"general"},
+  {id:781,w:"thirty",ipa:"/ˈθɜːrti/",vn:"ba mươi",ex:'There are <em>thirty</em> days in June.',t:"num",topic:"general"},
+  {id:782,w:"this",ipa:"/ðɪs/",vn:"cái này",ex:'<em>This</em> is my pen.',t:"det",topic:"general"},
+  {id:783,w:"those",ipa:"/ðəʊz/",vn:"những cái đó",ex:'<em>Those</em> are his books.',t:"det",topic:"general"},
+  {id:784,w:"though",ipa:"/ðəʊ/",vn:"mặc dù, dù",ex:'<em>Though</em> it was cold, she went out.',t:"conj",topic:"general"},
+  {id:785,w:"thousand",ipa:"/ˈθaʊznd/",vn:"một nghìn",ex:'It costs two <em>thousand</em> dollars.',t:"num",topic:"general"},
+  {id:786,w:"three",ipa:"/θriː/",vn:"ba",ex:'I have <em>three</em> sisters.',t:"num",topic:"general"},
+  {id:787,w:"Thursday",ipa:"/ˈθɜːrzdeɪ/",vn:"thứ Năm",ex:'The meeting is on <em>Thursday</em>.',t:"n",topic:"time"},
+  {id:788,w:"ticket",ipa:"/ˈtɪkɪt/",vn:"vé (xe, máy bay, rạp...)",ex:'She bought two movie <em>tickets</em>.',t:"n",topic:"travel"},
+  {id:789,w:"tiger",ipa:"/ˈtaɪɡər/",vn:"con hổ",ex:'The <em>tiger</em> is a powerful animal.',t:"n",topic:"nature"},
+  {id:790,w:"time",ipa:"/taɪm/",vn:"thời gian; lần",ex:'What <em>time</em> is it?',t:"n",topic:"time"},
+  {id:791,w:"tired",ipa:"/ˈtaɪərd/",vn:"mệt mỏi",ex:'She is <em>tired</em> after work.',t:"adj",topic:"feeling"},
+  {id:792,w:"to",ipa:"/tuː/",vn:"đến, tới; để",ex:'Go <em>to</em> school.',t:"prep",topic:"general"},
+  {id:793,w:"today",ipa:"/təˈdeɪ/",vn:"hôm nay",ex:'What day is <em>today</em>?',t:"n/adv",topic:"time"},
+  {id:794,w:"together",ipa:"/təˈɡeðər/",vn:"cùng nhau",ex:'We work <em>together</em>.',t:"adv",topic:"general"},
+  {id:795,w:"tomato",ipa:"/təˈmɑːtəʊ/",vn:"quả cà chua",ex:'Add <em>tomatoes</em> to the salad.',t:"n",topic:"food"},
+  {id:796,w:"tomorrow",ipa:"/təˈmɒrəʊ/",vn:"ngày mai",ex:'See you <em>tomorrow</em>!',t:"n/adv",topic:"time"},
+  {id:797,w:"tonight",ipa:"/təˈnaɪt/",vn:"tối nay",ex:'We\'ll watch a movie <em>tonight</em>.',t:"n/adv",topic:"time"},
+  {id:798,w:"too",ipa:"/tuː/",vn:"cũng; quá",ex:'She is <em>too</em> tired to walk.',t:"adv",topic:"general"},
+  {id:799,w:"tooth",ipa:"/tuːθ/",vn:"cái răng",ex:'Brush your <em>teeth</em> twice a day.',t:"n",topic:"body"},
+  {id:800,w:"touch",ipa:"/tʌtʃ/",vn:"chạm vào",ex:'Don\'t <em>touch</em> the hot pan.',t:"v",topic:"general"},
+  {id:801,w:"towel",ipa:"/ˈtaʊəl/",vn:"khăn tắm, khăn lau",ex:'Use a <em>towel</em> to dry your hands.',t:"n",topic:"home"},
+  {id:802,w:"town",ipa:"/taʊn/",vn:"thị trấn, thị xã",ex:'She lives in a small <em>town</em>.',t:"n",topic:"place"},
+  {id:803,w:"toy",ipa:"/tɔɪ/",vn:"đồ chơi",ex:'Children love their <em>toys</em>.',t:"n",topic:"general"},
+  {id:804,w:"traffic",ipa:"/ˈtræfɪk/",vn:"giao thông",ex:'There is a lot of <em>traffic</em> here.',t:"n",topic:"travel"},
+  {id:805,w:"train",ipa:"/treɪn/",vn:"tàu hỏa; luyện tập",ex:'She takes the <em>train</em> to work.',t:"n/v",topic:"travel"},
+  {id:806,w:"tree",ipa:"/triː/",vn:"cây (có thân gỗ)",ex:'A bird sits in the <em>tree</em>.',t:"n",topic:"nature"},
+  {id:807,w:"trip",ipa:"/trɪp/",vn:"chuyến đi",ex:'We went on a <em>trip</em> last summer.',t:"n",topic:"travel"},
+  {id:808,w:"trouble",ipa:"/ˈtrʌbl/",vn:"rắc rối, khó khăn",ex:'She is in <em>trouble</em>.',t:"n",topic:"general"},
+  {id:809,w:"truck",ipa:"/trʌk/",vn:"xe tải",ex:'A big <em>truck</em> blocked the road.',t:"n",topic:"travel"},
+  {id:810,w:"true",ipa:"/truː/",vn:"đúng, thật",ex:'Is that story <em>true</em>?',t:"adj",topic:"general"},
+  {id:811,w:"try",ipa:"/traɪ/",vn:"thử; cố gắng",ex:'<em>Try</em> your best.',t:"v",topic:"general"},
+  {id:812,w:"Tuesday",ipa:"/ˈtjuːzdeɪ/",vn:"thứ Ba",ex:'We have gym class on <em>Tuesday</em>.',t:"n",topic:"time"},
+  {id:813,w:"turn",ipa:"/tɜːrn/",vn:"rẽ; quay; lượt",ex:'It\'s your <em>turn</em> to speak.',t:"v/n",topic:"general"},
+  {id:814,w:"twelve",ipa:"/twelv/",vn:"mười hai",ex:'There are <em>twelve</em> months in a year.',t:"num",topic:"general"},
+  {id:815,w:"twenty",ipa:"/ˈtwenti/",vn:"hai mươi",ex:'She is <em>twenty</em> years old.',t:"num",topic:"general"},
+  {id:816,w:"two",ipa:"/tuː/",vn:"hai",ex:'I have <em>two</em> dogs.',t:"num",topic:"general"},
+  {id:817,w:"typhoon",ipa:"/taɪˈfuːn/",vn:"bão, cơn bão lớn",ex:'A <em>typhoon</em> hit the coast.',t:"n",topic:"nature"},
+  {id:818,w:"umbrella",ipa:"/ʌmˈbrelə/",vn:"ô, dù",ex:'Take an <em>umbrella</em> in case it rains.',t:"n",topic:"general"},
+  {id:819,w:"uncle",ipa:"/ˈʌŋkl/",vn:"chú, bác, cậu",ex:'My <em>uncle</em> lives in the city.',t:"n",topic:"family"},
+  {id:820,w:"under",ipa:"/ˈʌndər/",vn:"dưới, bên dưới",ex:'The cat is <em>under</em> the table.',t:"prep",topic:"general"},
+  {id:821,w:"understand",ipa:"/ˌʌndəˈstænd/",vn:"hiểu",ex:'Do you <em>understand</em> the lesson?',t:"v",topic:"school"},
+  {id:822,w:"unhappy",ipa:"/ʌnˈhæpi/",vn:"không vui, buồn",ex:'She looked <em>unhappy</em>.',t:"adj",topic:"feeling"},
+  {id:823,w:"uniform",ipa:"/ˈjuːnɪfɔːrm/",vn:"đồng phục",ex:'Students wear a <em>uniform</em>.',t:"n",topic:"school"},
+  {id:824,w:"until",ipa:"/ənˈtɪl/",vn:"cho đến khi",ex:'Wait <em>until</em> she arrives.',t:"prep/conj",topic:"time"},
+  {id:825,w:"up",ipa:"/ʌp/",vn:"lên, phía trên",ex:'Look <em>up</em> at the sky.',t:"adv",topic:"general"},
+  {id:826,w:"use",ipa:"/juːz/",vn:"sử dụng",ex:'<em>Use</em> a dictionary to check.',t:"v",topic:"general"},
+  {id:827,w:"useful",ipa:"/ˈjuːsfl/",vn:"hữu ích, có ích",ex:'This tool is very <em>useful</em>.',t:"adj",topic:"general"},
+  {id:828,w:"usually",ipa:"/ˈjuːʒuəli/",vn:"thường thường",ex:'She <em>usually</em> walks to school.',t:"adv",topic:"general"},
+  {id:829,w:"vacation",ipa:"/veɪˈkeɪʃn/",vn:"kỳ nghỉ",ex:'We went to the beach for <em>vacation</em>.',t:"n",topic:"travel"},
+  {id:830,w:"vegetable",ipa:"/ˈvedʒtəbl/",vn:"rau củ",ex:'Eat more <em>vegetables</em>.',t:"n",topic:"food"},
+  {id:831,w:"visit",ipa:"/ˈvɪzɪt/",vn:"thăm, ghé thăm",ex:'We will <em>visit</em> grandma tomorrow.',t:"v",topic:"travel"},
+  {id:832,w:"voice",ipa:"/vɔɪs/",vn:"giọng nói",ex:'She has a beautiful <em>voice</em>.',t:"n",topic:"general"},
+  {id:833,w:"wait",ipa:"/weɪt/",vn:"chờ đợi",ex:'<em>Wait</em> for me!',t:"v",topic:"general"},
+  {id:834,w:"waiter",ipa:"/ˈweɪtər/",vn:"bồi bàn nam",ex:'The <em>waiter</em> brought our food.',t:"n",topic:"work"},
+  {id:835,w:"waitress",ipa:"/ˈweɪtrəs/",vn:"bồi bàn nữ",ex:'The <em>waitress</em> took our order.',t:"n",topic:"work"},
+  {id:836,w:"wake",ipa:"/weɪk/",vn:"thức dậy",ex:'<em>Wake</em> up early tomorrow.',t:"v",topic:"general"},
+  {id:837,w:"walk",ipa:"/wɔːk/",vn:"đi bộ",ex:'She <em>walks</em> to school.',t:"v/n",topic:"sports"},
+  {id:838,w:"wall",ipa:"/wɔːl/",vn:"bức tường",ex:'Hang the picture on the <em>wall</em>.',t:"n",topic:"home"},
+  {id:839,w:"want",ipa:"/wɒnt/",vn:"muốn",ex:'I <em>want</em> a glass of water.',t:"v",topic:"general"},
+  {id:840,w:"warm",ipa:"/wɔːrm/",vn:"ấm áp",ex:'The weather is <em>warm</em> today.',t:"adj",topic:"nature"},
+  {id:841,w:"wash",ipa:"/wɒʃ/",vn:"rửa, giặt",ex:'<em>Wash</em> your hands before eating.',t:"v",topic:"home"},
+  {id:842,w:"watch",ipa:"/wɒtʃ/",vn:"xem; đồng hồ đeo tay",ex:'She <em>watches</em> TV every evening.',t:"v/n",topic:"general"},
+  {id:843,w:"water",ipa:"/ˈwɔːtər/",vn:"nước",ex:'Drink more <em>water</em>.',t:"n",topic:"general"},
+  {id:844,w:"way",ipa:"/weɪ/",vn:"con đường; cách thức",ex:'Which <em>way</em> should I go?',t:"n",topic:"general"},
+  {id:845,w:"weak",ipa:"/wiːk/",vn:"yếu ớt",ex:'She felt <em>weak</em> after the illness.',t:"adj",topic:"general"},
+  {id:846,w:"wear",ipa:"/weər/",vn:"mặc, đội, đeo",ex:'She <em>wears</em> a hat in summer.',t:"v",topic:"general"},
+  {id:847,w:"weather",ipa:"/ˈweðər/",vn:"thời tiết",ex:'The <em>weather</em> is nice today.',t:"n",topic:"nature"},
+  {id:848,w:"Wednesday",ipa:"/ˈwenzdeɪ/",vn:"thứ Tư",ex:'We have art class on <em>Wednesday</em>.',t:"n",topic:"time"},
+  {id:849,w:"week",ipa:"/wiːk/",vn:"tuần",ex:'She visits once a <em>week</em>.',t:"n",topic:"time"},
+  {id:850,w:"weekend",ipa:"/ˌwiːkˈend/",vn:"cuối tuần",ex:'I relax on the <em>weekend</em>.',t:"n",topic:"time"},
+  {id:851,w:"welcome",ipa:"/ˈwelkəm/",vn:"chào mừng",ex:'<em>Welcome</em> to our school.',t:"v/interj",topic:"social"},
+  {id:852,w:"well",ipa:"/wel/",vn:"giỏi; tốt",ex:'She speaks English very <em>well</em>.',t:"adv/adj",topic:"general"},
+  {id:853,w:"west",ipa:"/west/",vn:"phía tây",ex:'The sun sets in the <em>west</em>.',t:"n/adj",topic:"general"},
+  {id:854,w:"wet",ipa:"/wet/",vn:"ướt",ex:'My clothes are <em>wet</em>.',t:"adj",topic:"general"},
+  {id:855,w:"what",ipa:"/wɒt/",vn:"cái gì, gì",ex:'<em>What</em> is your name?',t:"pron",topic:"general"},
+  {id:856,w:"when",ipa:"/wen/",vn:"khi nào",ex:'<em>When</em> is your birthday?',t:"adv",topic:"general"},
+  {id:857,w:"where",ipa:"/weər/",vn:"ở đâu",ex:'<em>Where</em> do you live?',t:"adv",topic:"general"},
+  {id:858,w:"whether",ipa:"/ˈweðər/",vn:"liệu, có... không",ex:'I\'m not sure <em>whether</em> to go.',t:"conj",topic:"general"},
+  {id:859,w:"which",ipa:"/wɪtʃ/",vn:"cái nào",ex:'<em>Which</em> one do you want?',t:"det/pron",topic:"general"},
+  {id:860,w:"white",ipa:"/waɪt/",vn:"màu trắng",ex:'She wears a <em>white</em> dress.',t:"adj",topic:"general"},
+  {id:861,w:"who",ipa:"/huː/",vn:"ai",ex:'<em>Who</em> is that person?',t:"pron",topic:"general"},
+  {id:862,w:"whose",ipa:"/huːz/",vn:"của ai",ex:'<em>Whose</em> bag is this?',t:"pron",topic:"general"},
+  {id:863,w:"why",ipa:"/waɪ/",vn:"tại sao",ex:'<em>Why</em> are you sad?',t:"adv",topic:"general"},
+  {id:864,w:"wife",ipa:"/waɪf/",vn:"vợ",ex:'His <em>wife</em> is a nurse.',t:"n",topic:"family"},
+  {id:865,w:"will",ipa:"/wɪl/",vn:"sẽ (tương lai)",ex:'She <em>will</em> come tomorrow.',t:"v",topic:"general"},
+  {id:866,w:"win",ipa:"/wɪn/",vn:"thắng",ex:'Our team will <em>win</em> today.',t:"v",topic:"sports"},
+  {id:867,w:"wind",ipa:"/wɪnd/",vn:"gió",ex:'The <em>wind</em> is blowing hard.',t:"n",topic:"nature"},
+  {id:868,w:"window",ipa:"/ˈwɪndəʊ/",vn:"cửa sổ",ex:'Open the <em>window</em>.',t:"n",topic:"home"},
+  {id:869,w:"windy",ipa:"/ˈwɪndi/",vn:"có gió, nhiều gió",ex:'It\'s a very <em>windy</em> day.',t:"adj",topic:"nature"},
+  {id:870,w:"winter",ipa:"/ˈwɪntər/",vn:"mùa đông",ex:'It snows in <em>winter</em>.',t:"n",topic:"nature"},
+  {id:871,w:"wise",ipa:"/waɪz/",vn:"khôn ngoan",ex:'She made a <em>wise</em> decision.',t:"adj",topic:"general"},
+  {id:872,w:"wish",ipa:"/wɪʃ/",vn:"ước muốn; chúc",ex:'I <em>wish</em> you good luck.',t:"v/n",topic:"feeling"},
+  {id:873,w:"with",ipa:"/wɪð/",vn:"với, cùng với",ex:'She came <em>with</em> her friend.',t:"prep",topic:"general"},
+  {id:874,w:"without",ipa:"/wɪˈðaʊt/",vn:"không có, thiếu",ex:'Coffee <em>without</em> sugar, please.',t:"prep",topic:"general"},
+  {id:875,w:"woman",ipa:"/ˈwʊmən/",vn:"người phụ nữ",ex:'She is a strong <em>woman</em>.',t:"n",topic:"general"},
+  {id:876,w:"wonderful",ipa:"/ˈwʌndərfl/",vn:"tuyệt vời",ex:'What a <em>wonderful</em> day!',t:"adj",topic:"general"},
+  {id:877,w:"word",ipa:"/wɜːrd/",vn:"từ ngữ, chữ",ex:'Spell that <em>word</em>.',t:"n",topic:"school"},
+  {id:878,w:"work",ipa:"/wɜːrk/",vn:"làm việc; công việc",ex:'She <em>works</em> hard every day.',t:"v/n",topic:"work"},
+  {id:879,w:"workbook",ipa:"/ˈwɜːrkbʊk/",vn:"sách bài tập",ex:'Open your <em>workbook</em> to page five.',t:"n",topic:"school"},
+  {id:880,w:"worker",ipa:"/ˈwɜːrkər/",vn:"công nhân, người lao động",ex:'She is a factory <em>worker</em>.',t:"n",topic:"work"},
+  {id:881,w:"world",ipa:"/wɜːrld/",vn:"thế giới",ex:'She wants to travel the <em>world</em>.',t:"n",topic:"general"},
+  {id:882,w:"worry",ipa:"/ˈwʌri/",vn:"lo lắng",ex:'Don\'t <em>worry</em> about it.',t:"v",topic:"feeling"},
+  {id:883,w:"write",ipa:"/raɪt/",vn:"viết",ex:'<em>Write</em> your name here.',t:"v",topic:"school"},
+  {id:884,w:"writer",ipa:"/ˈraɪtər/",vn:"nhà văn, tác giả",ex:'She is a famous <em>writer</em>.',t:"n",topic:"work"},
+  {id:885,w:"wrong",ipa:"/rɒŋ/",vn:"sai, không đúng",ex:'That answer is <em>wrong</em>.',t:"adj",topic:"general"},
+  {id:886,w:"year",ipa:"/jɪər/",vn:"năm",ex:'She is ten <em>years</em> old.',t:"n",topic:"time"},
+  {id:887,w:"yellow",ipa:"/ˈjeləʊ/",vn:"màu vàng",ex:'The sun is <em>yellow</em>.',t:"adj",topic:"general"},
+  {id:888,w:"yes",ipa:"/jes/",vn:"vâng, có, đúng vậy",ex:'<em>Yes</em>, I agree!',t:"interj",topic:"general"},
+  {id:889,w:"yesterday",ipa:"/ˈjestərdeɪ/",vn:"hôm qua",ex:'It rained <em>yesterday</em>.',t:"n/adv",topic:"time"},
+  {id:890,w:"yet",ipa:"/jet/",vn:"chưa; vẫn còn",ex:'I haven\'t finished <em>yet</em>.',t:"adv",topic:"general"},
+  {id:891,w:"young",ipa:"/jʌŋ/",vn:"trẻ, còn trẻ",ex:'She looks very <em>young</em>.',t:"adj",topic:"general"},
+  {id:892,w:"zoo",ipa:"/zuː/",vn:"vườn thú",ex:'We visited the <em>zoo</em> on Sunday.',t:"n",topic:"place"},
+];
+
+// ── TOPIC LABELS ────────────────────────────────────────────────────────────
+const TOPIC_LABELS={
+  general:"Tổng quát",family:"Gia đình",business:"Kinh doanh",nature:"Thiên nhiên",
+  place:"Địa điểm",health:"Sức khỏe",work:"Công việc",education:"Giáo dục",
+  social:"Xã hội",food:"Ẩm thực",science:"Khoa học",travel:"Du lịch",
+  home:"Nhà cửa",body:"Cơ thể",feeling:"Cảm xúc",hobby:"Sở thích",
+  school:"Trường học",sports:"Thể thao",time:"Thời gian"
+};
+
+// ── SRS ─────────────────────────────────────────────────────────────────────
+const SRS_KEY='wf_srs_v3',STREAK_KEY='wf_streak',TODAY_KEY='wf_today2';
+const IVLS=[5*60000,10*60000,864e5,3*864e5,7*864e5,21*864e5];
+let srsData={},todayCount=0,favorites=new Set();
+let sessionKnew=0,sessionForgot=0,sessionSeen=[];
+const RECENT=8;
+
+function loadData(){
+  try{const r=localStorage.getItem(SRS_KEY);if(r)srsData=JSON.parse(r);}catch(e){}
+  const today=new Date().toDateString();
+  try{const d=JSON.parse(localStorage.getItem(TODAY_KEY)||'{}');if(d.date===today)todayCount=d.count||0;}catch(e){}
+  try{const f=localStorage.getItem('wf_favs');if(f)favorites=new Set(JSON.parse(f));}catch(e){}
+}
+function saveData(){
+  localStorage.setItem(SRS_KEY,JSON.stringify(srsData));
+  localStorage.setItem(TODAY_KEY,JSON.stringify({date:new Date().toDateString(),count:todayCount}));
+  localStorage.setItem('wf_favs',JSON.stringify([...favorites]));
+}
+function getState(id){const d=srsData[id];if(!d||!d.seen)return'new';if((d.ease||1)<=1)return'review';if((d.interval||0)>=IVLS[4])return'known';return'review';}
+function isDue(id){const d=srsData[id];if(!d||!d.seen)return true;return Date.now()>=(d.nextReview||0);}
+function recordRating(id,knew){
+  let d=srsData[id]||{interval:0,ease:1,seen:false,nextReview:0};
+  d.seen=true;
+  if(knew){d.ease=Math.min((d.ease||1)+1,5);d.interval=IVLS[Math.min(d.ease,IVLS.length-1)];}
+  else{d.ease=Math.max((d.ease||1)-1,0);d.interval=IVLS[0];}
+  d.nextReview=Date.now()+d.interval;srsData[id]=d;todayCount++;saveData();
+}
+
+// ── VOICE (ưu tiên giọng nam tiếng Anh) ─────────────────────────────────────
+let selectedVoice=null,audioUnlocked=false,pendingWord=null,speakActive=false,speakLoop=null;
+
+function loadMaleVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const voices=window.speechSynthesis.getVoices();
+  if(!voices.length) return;
+  // Priority: male-named, US/UK English
+  const malePriority=['Daniel','David','Alex','Aaron','Fred','Thomas','James',
+    'Google US English','Microsoft David','Microsoft Mark','en-US','en-GB'];
+  for(const kw of malePriority){
+    const v=voices.find(v=>v.lang.startsWith('en')&&(v.name.includes(kw)||v.lang===kw));
+    if(v){selectedVoice=v;break;}
+  }
+  if(!selectedVoice){
+    selectedVoice=voices.find(v=>v.lang.startsWith('en'))||voices[0];
+  }
+  const vi=document.getElementById('voice-name');
+  if(vi&&selectedVoice) vi.textContent='🔊 '+selectedVoice.name.split(' ').slice(0,2).join(' ');
+}
+window.speechSynthesis&&(window.speechSynthesis.onvoiceschanged=loadMaleVoice);
+
+function unlockAudio(){
+  if(audioUnlocked)return;audioUnlocked=true;
+  loadMaleVoice();
+  if(!('speechSynthesis'in window))return;
+  const u=new SpeechSynthesisUtterance(' ');u.volume=0;
+  u.onend=()=>{if(pendingWord){const w=pendingWord;pendingWord=null;startSpeakLoop(w);}};
+  window.speechSynthesis.speak(u);
+}
+function stopSpeak(){
+  speakActive=false;
+  if(speakLoop){clearTimeout(speakLoop);speakLoop=null;}
+  document.getElementById('voice-bars').classList.remove('speaking');
+  try{window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}
+}
+function startSpeakLoop(word){
+  stopSpeak();
+  if(!('speechSynthesis'in window))return;
+  if(!audioUnlocked){pendingWord=word;return;}
+  speakActive=true;
+  const bars=document.getElementById('voice-bars');
+  function go(){
+    if(!speakActive)return;
+    try{window.speechSynthesis.cancel();}catch(e){}
+    const u=new SpeechSynthesisUtterance(word);
+    u.lang='en-US';u.rate=0.82;u.pitch=0.85;u.volume=1;
+    if(selectedVoice) u.voice=selectedVoice;
+    let wd=setTimeout(()=>{if(!speakActive)return;try{window.speechSynthesis.cancel();}catch(e){}speakLoop=setTimeout(go,200);},8000);
+    u.onstart=()=>{if(bars)bars.classList.add('speaking');};
+    u.onend=()=>{clearTimeout(wd);if(bars)bars.classList.remove('speaking');if(!speakActive)return;speakLoop=setTimeout(go,1200);};
+    u.onerror=()=>{clearTimeout(wd);if(bars)bars.classList.remove('speaking');if(!speakActive)return;speakLoop=setTimeout(go,800);};
+    try{window.speechSynthesis.speak(u);}catch(e){}
+  }
+  go();
+}
+
+// ── PICK / HISTORY ───────────────────────────────────────────────────────────
+let currentMode='smart',currentTopic=null,currentWordId=null;
+let history=[],historyPos=-1;
+
+function getPool(){
+  let pool=currentTopic?WORDS.filter(w=>w.topic===currentTopic):WORDS;
+  return{all:pool,newW:pool.filter(w=>getState(w.id)==='new'),reviewW:pool.filter(w=>getState(w.id)==='review'&&isDue(w.id)),knownW:pool.filter(w=>getState(w.id)==='known'&&isDue(w.id))};
+}
+function pick(){
+  const{all,newW,reviewW,knownW}=getPool();
+  const recent=new Set(sessionSeen.slice(-RECENT));
+  const fN=newW.filter(w=>!recent.has(w.id)),fR=reviewW.filter(w=>!recent.has(w.id)),fK=knownW.filter(w=>!recent.has(w.id));
+  let pool;
+  if(currentMode==='new')pool=fN.length?fN:newW;
+  else if(currentMode==='review')pool=fR.length?fR:(reviewW.length?reviewW:(fN.length?fN:all));
+  else if(currentMode==='explore'){const f=all.filter(w=>!recent.has(w.id));pool=f.length?f:all;}
+  else{const r=Math.random();if(r<.5&&fN.length)pool=fN;else if(r<.8&&fR.length)pool=fR;else if(fK.length)pool=fK;else{const f=all.filter(w=>!recent.has(w.id));pool=f.length?f:all;}}
+  if(!pool||!pool.length)return null;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function nextWord(){
+  if(historyPos<history.length-1){historyPos++;return WORDS.find(w=>w.id===history[historyPos]);}
+  const w=pick();if(!w)return null;
+  history.push(w.id);historyPos=history.length-1;
+  sessionSeen.push(w.id);if(sessionSeen.length>50)sessionSeen.shift();
+  return w;
+}
+function prevWord(){if(historyPos>0){historyPos--;return WORDS.find(w=>w.id===history[historyPos]);}return null;}
+
+// ── AUTOPLAY ─────────────────────────────────────────────────────────────────
+let autoplayOn=false,autoplaySeconds=20,autoplayTimer=null,autoplayCountdownInterval=null;
+function setAutoSpeed(sec){
+  autoplaySeconds=sec;
+  document.querySelectorAll('.speed-pill').forEach(p=>p.classList.toggle('active',parseInt(p.dataset.sec)===sec));
+  document.documentElement.style.setProperty('--auto-duration',sec+'s');
+  if(autoplayOn)resetAutoplayTimer();
+  showToast('⏱ Tự động chuyển sau '+sec+'s');
+}
+function toggleAutoplay(){
+  autoplayOn=!autoplayOn;updateAutoplayUI();
+  if(autoplayOn){resetAutoplayTimer();showToast('⏵ Tự động bật – '+autoplaySeconds+'s/từ');}
+  else{clearAutoplayTimer();showToast('⏸ Tự động đã tắt');}
+}
+function updateAutoplayUI(){
+  const btn1=document.getElementById('autoplay-btn'),btn2=document.getElementById('autoplay-btn2');
+  const label1=document.getElementById('autoplay-label'),label2=document.getElementById('autoplay-label2');
+  const ring=document.getElementById('autoplay-ring'),wrap=document.getElementById('progress-wrap');
+  if(autoplayOn){
+    btn1.className='autoplay-btn on';btn1.querySelector('.autoplay-icon').textContent='⏸';label1.textContent=autoplaySeconds+'s';
+    if(btn2){btn2.className='autoplay-btn on';label2.textContent='Đang bật';}
+    ring.classList.add('pulse');wrap.classList.add('active');
+  }else{
+    btn1.className='autoplay-btn off';btn1.querySelector('.autoplay-icon').textContent='⏵';label1.textContent='Tự động';
+    if(btn2){btn2.className='autoplay-btn off';label2.textContent='Đang tắt';}
+    ring.classList.remove('pulse');wrap.classList.remove('active');
+    const track=document.getElementById('progress-track');track.style.transition='none';track.style.transform='scaleX(0)';
+    document.getElementById('progress-label').textContent='⏱ '+autoplaySeconds+'s';
+  }
+}
+function startProgressBar(){
+  const track=document.getElementById('progress-track'),label=document.getElementById('progress-label');
+  track.style.transition='none';track.style.transform='scaleX(0)';
+  void track.offsetWidth;
+  track.style.transition='transform '+autoplaySeconds+'s linear';track.style.transform='scaleX(1)';
+  let remaining=autoplaySeconds;label.textContent='⏱ '+remaining+'s';
+  if(autoplayCountdownInterval)clearInterval(autoplayCountdownInterval);
+  autoplayCountdownInterval=setInterval(()=>{remaining--;if(remaining<=0){label.textContent='⏱ 0s';clearInterval(autoplayCountdownInterval);}else{label.textContent='⏱ '+remaining+'s';}},1000);
+}
+function clearAutoplayTimer(){
+  if(autoplayTimer){clearTimeout(autoplayTimer);autoplayTimer=null;}
+  if(autoplayCountdownInterval){clearInterval(autoplayCountdownInterval);autoplayCountdownInterval=null;}
+  const track=document.getElementById('progress-track');track.style.transition='none';track.style.transform='scaleX(0)';
+}
+function resetAutoplayTimer(){
+  clearAutoplayTimer();if(!autoplayOn)return;
+  startProgressBar();
+  autoplayTimer=setTimeout(()=>{if(autoplayOn)doNext();},autoplaySeconds*1000);
+}
+
+const GRADS=['linear-gradient(135deg,#1a1a2e,#0f1b35)','linear-gradient(135deg,#0f3460,#1a1a2e)','linear-gradient(135deg,#1a2a1a,#0d1f0d)','linear-gradient(135deg,#2a1a0a,#1a0e00)','linear-gradient(135deg,#2a0a2a,#16001f)','linear-gradient(135deg,#0a2a2a,#001a1a)'];
+const card=document.getElementById('main-card');
+const indUp=document.getElementById('ind-up'),indDown=document.getElementById('ind-down');
+
+const _cvs=document.createElement('canvas');
+const _ctx2d=_cvs.getContext('2d');
+function scaleWordFont(){
+  const el=document.getElementById('c-word');
+  if(!el||!card)return;
+  const text=el.textContent||'';
+  if(!text)return;
+  const available=card.offsetWidth-40;
+  if(available<=0)return;
+  let bestSize=20;
+  if(_ctx2d){
+    let lo=20,hi=96;
+    while(lo<=hi){
+      const mid=(lo+hi)>>1;
+      _ctx2d.font='800 '+mid+'px Syne, sans-serif';
+      if(_ctx2d.measureText(text).width<=available){bestSize=mid;lo=mid+1;}
+      else hi=mid-1;
+    }
+  }else{
+    el.style.fontSize='96px';
+    let size=96;
+    while(el.scrollWidth>available&&size>20){size-=2;el.style.fontSize=size+'px';}
+    bestSize=size;
+  }
+  el.style.fontSize=bestSize+'px';
+  el.style.letterSpacing=bestSize<36?'0px':bestSize<56?'-1px':'-2px';
+}
+window.addEventListener('resize',()=>{if(currentWordId!==null)scaleWordFont();});
+
+function renderWord(word,dir){
+  if(!word)return;
+  currentWordId=word.id;
+  const el=document.getElementById('c-word');
+  el.textContent=word.w;
+  scaleWordFont();
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>scaleWordFont());}
+  document.getElementById('c-ipa').textContent=word.ipa;
+  document.getElementById('c-meaning').textContent=word.vn;
+  document.getElementById('c-example').innerHTML=word.ex;
+  document.getElementById('c-type').textContent=word.t;
+  const st=getState(word.id),sb=document.getElementById('c-srs');
+  if(st==='new'){sb.textContent='Mới';sb.className='card-srs-badge badge-new';}
+  else if(st==='review'){sb.textContent='Ôn tập';sb.className='card-srs-badge badge-review';}
+  else{sb.textContent='Đã nhớ';sb.className='card-srs-badge badge-known';}
+  card.style.background=GRADS[word.id%GRADS.length];
+  const fav=document.getElementById('btn-fav');
+  fav.textContent=favorites.has(word.id)?'❤️':'♡';
+  fav.classList.toggle('active',favorites.has(word.id));
+  card.style.transition='none';
+  if(dir==='next'){card.style.transform='translateY(60px) scale(.97)';card.style.opacity='0';}
+  else if(dir==='prev'){card.style.transform='translateY(-60px) scale(.97)';card.style.opacity='0';}
+  else{card.style.transform='translateY(0)';card.style.opacity='1';}
+  void card.offsetWidth;
+  card.style.transition='transform .32s cubic-bezier(.34,1.4,.64,1),opacity .28s ease';
+  card.style.transform='translateY(0) scale(1)';card.style.opacity='1';
+  updateStats();resetInds();isSwiping=false;
+  setTimeout(()=>startSpeakLoop(word.w),450);
+  if(autoplayOn)resetAutoplayTimer();
+}
+
+function updateStats(){
+  const{newW,reviewW,knownW}=getPool();
+  document.getElementById('s-new').textContent=newW.length;
+  document.getElementById('s-review').textContent=reviewW.length;
+  document.getElementById('s-known').textContent=knownW.length;
+  document.getElementById('s-today').textContent=todayCount;
+}
+function resetInds(){indUp.style.opacity='0';indDown.style.opacity='0';currentY=0;}
+
+function rateCard(knew){
+  if(currentWordId===null)return;
+  recordRating(currentWordId,knew);
+  if(knew)sessionKnew++;else sessionForgot++;
+  showToast(knew?'✅ Tốt! Sẽ ôn sau':'❌ Sẽ nhắc lại sớm');
+  doNext();
+}
+
+let isSwiping=false;
+function doNext(){
+  if(isSwiping)return;isSwiping=true;stopSpeak();clearAutoplayTimer();
+  card.style.transition='transform .25s ease-in,opacity .25s ease';
+  card.style.transform='translateY(-80px) scale(.96)';card.style.opacity='0';
+  setTimeout(()=>{const w=nextWord();if(!w){showDone();isSwiping=false;}else renderWord(w,'next');},240);
+}
+function doPrev(){
+  if(isSwiping)return;
+  const p=prevWord();if(!p){showToast('Đây là từ đầu tiên');return;}
+  isSwiping=true;stopSpeak();clearAutoplayTimer();
+  card.style.transition='transform .25s ease-in,opacity .25s ease';
+  card.style.transform='translateY(80px) scale(.96)';card.style.opacity='0';
+  setTimeout(()=>renderWord(p,'prev'),240);
+}
+function toggleFav(){
+  if(currentWordId===null)return;
+  if(favorites.has(currentWordId)){favorites.delete(currentWordId);showToast('Đã bỏ yêu thích');}
+  else{favorites.add(currentWordId);showToast('❤️ Đã thêm yêu thích!');}
+  saveData();
+  const fav=document.getElementById('btn-fav');
+  fav.textContent=favorites.has(currentWordId)?'❤️':'♡';
+  fav.classList.toggle('active',favorites.has(currentWordId));
+}
+function showDone(){
+  clearAutoplayTimer();
+  document.getElementById('d-knew').textContent=sessionKnew;
+  document.getElementById('d-forgot').textContent=sessionForgot;
+  document.getElementById('d-fav').textContent=favorites.size;
+  const{newW}=getPool();
+  document.getElementById('done-sub').textContent='Bạn đã học '+todayCount+' từ hôm nay · Còn '+newW.length+' từ mới chưa học';
+  document.getElementById('done-screen').classList.add('show');
+  let s=parseInt(localStorage.getItem(STREAK_KEY)||'1')+1;
+  localStorage.setItem(STREAK_KEY,s);document.getElementById('streak-num').textContent=s;
+}
+function continueSession(){
+  document.getElementById('done-screen').classList.remove('show');
+  sessionKnew=0;sessionForgot=0;
+  const w=nextWord();if(w)renderWord(w,'next');
+}
+
+function openModePanel(){clearAutoplayTimer();document.getElementById('mode-panel').classList.add('open');}
+function closeModePanel(){document.getElementById('mode-panel').classList.remove('open');if(autoplayOn)resetAutoplayTimer();}
+function closeModeOnBg(e){if(e.target===document.getElementById('mode-panel'))closeModePanel();}
+function setMode(m){
+  currentMode=m;currentTopic=null;
+  document.querySelectorAll('.mode-card').forEach(el=>el.classList.remove('active'));
+  document.getElementById('mode-'+m).classList.add('active');
+  document.querySelectorAll('.topic-pill').forEach(el=>el.classList.remove('active'));
+  showToast('Chế độ: '+{smart:'Thông minh',new:'Từ mới',review:'Ôn tập',explore:'Khám phá'}[m]);
+}
+function setTopic(tp){
+  currentTopic=tp===currentTopic?null:tp;currentMode='smart';
+  document.querySelectorAll('.mode-card').forEach(el=>el.classList.remove('active'));
+  document.getElementById('mode-smart').classList.add('active');
+  document.querySelectorAll('.topic-pill').forEach(el=>el.classList.toggle('active',el.dataset.topic===currentTopic));
+  showToast('Chủ đề: '+(currentTopic?TOPIC_LABELS[currentTopic]:'Tất cả'));
+}
+function buildTopics(){
+  const topics=[...new Set(WORDS.map(w=>w.topic))].sort();
+  const grid=document.getElementById('topic-grid');
+  topics.forEach(tp=>{
+    const c=WORDS.filter(w=>w.topic===tp).length;
+    const b=document.createElement('button');
+    b.className='topic-pill';b.dataset.topic=tp;
+    b.textContent=(TOPIC_LABELS[tp]||tp)+' ('+c+')';
+    b.style.cssText='background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;font-family:inherit;';
+    b.addEventListener('click',()=>setTopic(tp));
+    grid.appendChild(b);
+  });
+  const s=document.createElement('style');
+  s.textContent='.topic-pill.active{background:rgba(224,255,79,.15)!important;border-color:rgba(224,255,79,.4)!important;color:var(--accent)!important;}';
+  document.head.appendChild(s);
+}
+
+// ── VOCAB LIST ──────────────────────────────────────────────────────────────
+function buildListFilters(){
+  const topics=[...new Set(WORDS.map(w=>w.topic))].sort();
+  const types=[...new Set(WORDS.map(w=>w.t))].sort();
+  const topicSel=document.getElementById('list-topic-filter');
+  const typeSel=document.getElementById('list-type-filter');
+  topics.forEach(tp=>{const o=document.createElement('option');o.value=tp;o.textContent=(TOPIC_LABELS[tp]||tp);topicSel.appendChild(o);});
+  types.forEach(tp=>{const o=document.createElement('option');o.value=tp;o.textContent=tp;typeSel.appendChild(o);});
+  document.getElementById('list-total').textContent=WORDS.length+' từ';
+}
+
+function filterVocabList(){
+  const q=document.getElementById('list-search').value.toLowerCase().trim();
+  const tp=document.getElementById('list-topic-filter').value;
+  const ty=document.getElementById('list-type-filter').value;
+  const filtered=WORDS.filter(w=>{
+    if(tp&&w.topic!==tp)return false;
+    if(ty&&w.t!==ty)return false;
+    if(q&&!w.w.toLowerCase().includes(q)&&!w.vn.toLowerCase().includes(q)&&!w.ipa.toLowerCase().includes(q))return false;
+    return true;
+  });
+  renderVocabRows(filtered);
+}
+
+function renderVocabRows(list){
+  const tbody=document.getElementById('list-tbody');
+  document.getElementById('list-count-bar').textContent='Hiển thị '+list.length+' / '+WORDS.length+' từ';
+  if(!list.length){
+    tbody.innerHTML='<tr><td colspan="6" class="vl-empty">Không tìm thấy từ nào 🔍</td></tr>';
+    return;
+  }
+  const stateColor={new:'rgba(79,195,247,.7)',review:'rgba(251,191,36,.7)',known:'rgba(74,222,128,.7)'};
+  const stateLabel={new:'Mới',review:'Ôn tập',known:'Đã nhớ'};
+  tbody.innerHTML=list.map((w,i)=>{
+    const st=getState(w.id);
+    return`<tr onclick="jumpToWord(${w.id})">
+      <td class="td-num">${i+1}</td>
+      <td>
+        <div class="td-word">${w.w}</div>
+        <div style="font-size:10px;color:${stateColor[st]};margin-top:2px;">${stateLabel[st]}</div>
+      </td>
+      <td class="td-ipa">${w.ipa}</td>
+      <td class="td-vn">${w.vn}</td>
+      <td><span class="td-badge">${w.t}</span></td>
+      <td class="td-topic">${TOPIC_LABELS[w.topic]||w.topic}</td>
+    </tr>`;
+  }).join('');
+}
+
+function openListPanel(){
+  clearAutoplayTimer();
+  filterVocabList();
+  document.getElementById('list-panel').classList.add('open');
+}
+function closeListPanel(){
+  document.getElementById('list-panel').classList.remove('open');
+  if(autoplayOn)resetAutoplayTimer();
+}
+function jumpToWord(id){
+  closeListPanel();
+  stopSpeak();
+  const w=WORDS.find(x=>x.id===id);
+  if(!w)return;
+  history.push(w.id);historyPos=history.length-1;
+  sessionSeen.push(w.id);
+  setTimeout(()=>renderWord(w,'next'),350);
+}
+// ────────────────────────────────────────────────────────────────────────────
+
+let startX=0,startY=0,currentY=0,isDragging=false;
+card.addEventListener('mousedown',onS);card.addEventListener('touchstart',onS,{passive:true});
+document.addEventListener('mousemove',onM);document.addEventListener('touchmove',onM,{passive:true});
+document.addEventListener('mouseup',onE);document.addEventListener('touchend',onE);
+function gp(e){return{x:e.touches?e.touches[0].clientX:e.clientX,y:e.touches?e.touches[0].clientY:e.clientY};}
+function onS(e){unlockAudio();const p=gp(e);startX=p.x;startY=p.y;isDragging=true;card.style.transition='none';if(autoplayOn)clearAutoplayTimer();}
+function onM(e){
+  if(!isDragging||isSwiping)return;
+  const p=gp(e),dy=p.y-startY,dx=p.x-startX;
+  if(Math.abs(dx)>Math.abs(dy)*1.5)return;
+  currentY=dy;card.style.transform='translateY('+dy+'px) rotate('+(dy*.01)+'deg)';
+  const r=Math.min(Math.abs(dy)/100,1);
+  if(dy<-15){indUp.style.opacity=r;indDown.style.opacity='0';}
+  else if(dy>15){indDown.style.opacity=r;indUp.style.opacity='0';}
+  else{indUp.style.opacity='0';indDown.style.opacity='0';}
+}
+function onE(){
+  if(!isDragging)return;isDragging=false;
+  if(currentY<-70)doNext();
+  else if(currentY>70)doPrev();
+  else{card.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';card.style.transform='translateY(0)';resetInds();if(autoplayOn)resetAutoplayTimer();}
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'||e.key==='ArrowRight')doNext();
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft')doPrev();
+  if(e.key==='f'||e.key==='F')toggleFav();
+  if(e.key==='1')rateCard(false);if(e.key==='2')rateCard(true);
+  if(e.key==='a'||e.key==='A')toggleAutoplay();
+  if(e.key==='l'||e.key==='L')openListPanel();
+  if(e.key==='Escape')closeListPanel();
+  if(e.key===' '){e.preventDefault();if(currentWordId!==null)startSpeakLoop(WORDS.find(w=>w.id===currentWordId).w);}
+});
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+
+loadData();buildTopics();buildListFilters();
+document.getElementById('streak-num').textContent=localStorage.getItem(STREAK_KEY)||'1';
+updateStats();
+
+document.getElementById('start-btn').addEventListener('click',()=>{
+  const o=document.getElementById('start-overlay');
+  o.style.opacity='0';setTimeout(()=>o.style.display='none',300);
+  unlockAudio();
+  const w=nextWord();
+  if(w){renderWord(w,null);setTimeout(()=>startSpeakLoop(w.w),500);}
+});
+</script>
+</body>
+</html>
